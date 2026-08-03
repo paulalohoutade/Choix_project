@@ -1,0 +1,107 @@
+<?php
+
+namespace App\Http\Controllers\Api\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\GalleryItem;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
+class AdminGalleryController extends Controller
+{
+    public function index(): JsonResponse
+    {
+        $items = GalleryItem::with('event:id,title')
+            ->orderBy('sort_order')
+            ->get();
+
+        return response()->json($items);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'title'       => 'nullable|string|max:200',
+            'description' => 'nullable|string',
+            'type'        => 'in:photo,video',
+            'youtube_url' => 'nullable|url',
+            'event_id'    => 'nullable|exists:events,id',
+            'sort_order'  => 'integer',
+        ]);
+
+        $item = GalleryItem::create($validated);
+
+        return response()->json($item, 201);
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        return response()->json(GalleryItem::findOrFail($id));
+    }
+
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $item = GalleryItem::findOrFail($id);
+
+        $validated = $request->validate([
+            'title'       => 'nullable|string|max:200',
+            'description' => 'nullable|string',
+            'youtube_url' => 'nullable|url',
+            'event_id'    => 'nullable|exists:events,id',
+            'sort_order'  => 'integer',
+        ]);
+
+        $item->update($validated);
+
+        return response()->json($item);
+    }
+
+    public function destroy(int $id): JsonResponse
+    {
+        $item = GalleryItem::findOrFail($id);
+
+        if ($item->file_path) {
+            Storage::disk('public')->delete($item->file_path);
+        }
+
+        $item->delete();
+
+        return response()->json(['message' => 'Élément supprimé.']);
+    }
+
+    public function upload(Request $request): JsonResponse
+    {
+        $request->validate([
+            'file'     => 'required|file|mimes:jpg,jpeg,png,webp,gif|max:5120',
+            'title'    => 'nullable|string|max:200',
+            'event_id' => 'nullable|exists:events,id',
+        ]);
+
+        $path = $request->file('file')->store('gallery', 'public');
+
+        $item = GalleryItem::create([
+            'title'    => $request->title,
+            'file_path'=> $path,
+            'type'     => 'photo',
+            'event_id' => $request->event_id,
+        ]);
+
+        return response()->json($item, 201);
+    }
+
+    public function reorder(Request $request): JsonResponse
+    {
+        $request->validate([
+            'items'            => 'required|array',
+            'items.*.id'       => 'required|exists:gallery_items,id',
+            'items.*.sort_order' => 'required|integer',
+        ]);
+
+        foreach ($request->items as $item) {
+            GalleryItem::where('id', $item['id'])->update(['sort_order' => $item['sort_order']]);
+        }
+
+        return response()->json(['message' => 'Ordre mis à jour.']);
+    }
+}
