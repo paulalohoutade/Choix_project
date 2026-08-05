@@ -22,7 +22,6 @@ class SettingController extends Controller
         'contact_email',
         'contact_phone',
         'address',
-        'donation_enabled',
     ];
 
     public function public(): JsonResponse

@@ -12,6 +12,7 @@ export default {
         'cec-gold-light': '#e2c97e',
         'cec-cream':      '#F5F0E8',
         'cec-dark':       '#0f2236',
+        'cec-anthracite': '#383838',
       },
       fontFamily: {
         display: ['"Playfair Display"', 'Georgia', 'serif'],

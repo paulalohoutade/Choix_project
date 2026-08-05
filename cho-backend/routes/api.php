@@ -9,7 +9,6 @@ use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\MemberController;
-use App\Http\Controllers\Api\DonationController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\SettingController;
 
@@ -24,7 +23,6 @@ use App\Http\Controllers\Api\Admin\AdminEventController;
 use App\Http\Controllers\Api\Admin\AdminPostController;
 use App\Http\Controllers\Api\Admin\AdminGalleryController;
 use App\Http\Controllers\Api\Admin\AdminMemberController;
-use App\Http\Controllers\Api\Admin\AdminDonationController;
 use App\Http\Controllers\Api\Admin\AdminContactController;
 use App\Http\Controllers\Api\Admin\AdminSettingController;
 
@@ -59,10 +57,6 @@ Route::prefix('v1')->group(function () {
 
     // Membres
     Route::get('members',              [MemberController::class, 'index']);
-
-    // Dons
-    Route::post('donations',           [DonationController::class, 'store']);
-    Route::get('donations/{ref}/status', [DonationController::class, 'status']);
 
     // Contact
     Route::post('contact',             [ContactController::class, 'store']);
@@ -121,11 +115,6 @@ Route::prefix('v1/admin')
     Route::apiResource('members',      AdminMemberController::class);
     Route::post('members/{id}/photo',  [AdminMemberController::class, 'uploadPhoto']);
     Route::post('members/reorder',     [AdminMemberController::class, 'reorder']);
-
-    // Dons
-    Route::get('donations',            [AdminDonationController::class, 'index']);
-    Route::get('donations/{id}',       [AdminDonationController::class, 'show']);
-    Route::patch('donations/{id}/status', [AdminDonationController::class, 'updateStatus']);
 
     // Messages de contact
     Route::get('contacts',             [AdminContactController::class, 'index']);

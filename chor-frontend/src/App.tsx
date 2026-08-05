@@ -12,7 +12,6 @@ import PostDetail from '@/pages/PostDetail'
 import Gallery from '@/pages/Gallery'
 import Members from '@/pages/Members'
 import Contact from '@/pages/Contact'
-import Donate from '@/pages/Donate'
 import APropos from '@/pages/APropos'
 import AdminLogin from '@/pages/admin/Login'
 import ResetPassword from '@/pages/admin/ResetPassword'
@@ -23,7 +22,6 @@ import AdminPosts from '@/pages/admin/PostsManager'
 import AdminGallery from '@/pages/admin/GalleryManager'
 import AdminMembers from '@/pages/admin/MembersManager'
 import AdminContacts from '@/pages/admin/ContactsManager'
-import AdminDonations from '@/pages/admin/DonationsManager'
 import AdminSettings from '@/pages/admin/Settings'
 import ProtectedRoute from '@/components/layout/ProtectedRoute'
 
@@ -49,7 +47,6 @@ export default function App() {
                   <Route path="/galerie" element={<Gallery />} />
                   <Route path="/membres" element={<Members />} />
                   <Route path="/contact" element={<Contact />} />
-                  <Route path="/dons" element={<Donate />} />
                   <Route path="/apropos" element={<APropos />} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
@@ -77,7 +74,6 @@ export default function App() {
           <Route path="gallery" element={<AdminGallery />} />
           <Route path="members" element={<AdminMembers />} />
           <Route path="contacts" element={<AdminContacts />} />
-          <Route path="donations" element={<AdminDonations />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Routes>

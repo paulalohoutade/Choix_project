@@ -20,7 +20,6 @@ class SettingSeeder extends Seeder
             'contact_email'      => 'contact@chorale-cec.org',
             'contact_phone'      => '+22900000000',
             'address'            => 'Église du Christianisme Céleste, Cotonou, Bénin',
-            'donation_enabled'   => 'true',
         ];
 
         foreach ($settings as $key => $value) {

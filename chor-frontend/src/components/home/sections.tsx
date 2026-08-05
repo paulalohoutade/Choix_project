@@ -4,7 +4,7 @@ import { useFeaturedAlbum, useUpcomingEvents, usePosts } from '@/hooks'
 import { usePlayerStore } from '@/store/playerStore'
 import AlbumCard from '@/components/albums/AlbumCard'
 import EventCard from '@/components/events/EventCard'
-import type { Post } from '@/types'
+import type { Event, Post } from '@/types'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
@@ -227,7 +227,7 @@ export function UpcomingEvents() {
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {list.map((ev) => <EventCard key={ev.id} event={ev} />)}
+        {list.map((ev: Event) => <EventCard key={ev.id} event={ev} />)}
       </div>
     </section>
   )

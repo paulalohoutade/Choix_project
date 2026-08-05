@@ -104,20 +104,6 @@ export interface Member {
   updated_at: string
 }
 
-// ── Donation ───────────────────────────────────────────────────────────────
-export interface Donation {
-  id: number
-  name: string
-  email: string
-  amount: number
-  currency: string
-  message?: string
-  reference: string
-  status: 'pending' | 'completed' | 'failed'
-  created_at: string
-  updated_at: string
-}
-
 // ── Contact ────────────────────────────────────────────────────────────────
 export interface Contact {
   id: number
@@ -154,8 +140,6 @@ export interface DashboardStats {
   events_upcoming: number
   posts_published: number
   unread_contacts: number
-  donations_total: number
-  donations_pending: number
 }
 
 // ── Paginated response ─────────────────────────────────────────────────────

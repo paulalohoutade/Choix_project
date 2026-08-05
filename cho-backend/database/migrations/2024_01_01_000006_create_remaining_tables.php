@@ -33,20 +33,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // ── Dons ──────────────────────────────────────────────────────────
-        Schema::create('donations', function (Blueprint $table) {
-            $table->id();
-            $table->string('donor_name', 100)->nullable();
-            $table->string('donor_email', 150)->nullable();
-            $table->decimal('amount', 10, 2);
-            $table->string('currency', 10)->default('XOF');
-            $table->enum('payment_method', ['mobile_money', 'card', 'other'])->default('other');
-            $table->string('transaction_ref')->nullable();
-            $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');
-            $table->text('message')->nullable();
-            $table->timestamps();
-        });
-
         // ── Messages de contact ────────────────────────────────────────────
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
@@ -71,7 +57,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('settings');
         Schema::dropIfExists('contacts');
-        Schema::dropIfExists('donations');
         Schema::dropIfExists('members');
         Schema::dropIfExists('gallery_items');
     }

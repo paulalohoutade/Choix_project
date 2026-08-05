@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   albumsApi, eventsApi, postsApi, galleryApi, membersApi, settingsApi,
   adminAlbumsApi, adminTracksApi, adminEventsApi, adminPostsApi,
-  adminGalleryApi, adminMembersApi, adminContactsApi, adminDonationsApi,
+  adminGalleryApi, adminMembersApi, adminContactsApi,
   adminSettingsApi, adminDashboardApi, authApi,
 } from '../lib/api'
 
@@ -217,10 +217,6 @@ export function useAdminContactMutations() {
   const remove = useMutation({ mutationFn: (id: number) => adminContactsApi.delete(id), onSuccess: invalidate })
 
   return { markAsRead, remove }
-}
-
-export function useAdminDonations(params?: Record<string, unknown>) {
-  return useQuery({ queryKey: ['admin-donations', params], queryFn: () => adminDonationsApi.list(params).then(r => r.data) })
 }
 
 export function useAdminSettings() {

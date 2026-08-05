@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Disc3, CalendarDays, Newspaper, Images,
-  Users, Mail, Gift, Settings, LogOut, Menu, X, Music,
+  Users, Mail, Settings, LogOut, Menu, X, Music,
   ChevronRight,
 } from 'lucide-react'
 import { authApi } from '@/lib/api'
@@ -17,7 +17,6 @@ const navItems = [
   { to: '/admin/gallery',   icon: Images,         label: 'Galerie' },
   { to: '/admin/members',   icon: Users,          label: 'Membres' },
   { to: '/admin/contacts',  icon: Mail,           label: 'Messages' },
-  { to: '/admin/donations', icon: Gift,           label: 'Dons' },
   { to: '/admin/settings',  icon: Settings,       label: 'Paramètres' },
 ]
 

@@ -71,12 +71,6 @@ export const membersApi = {
   list: () => api.get('/members'),
 }
 
-// ── Donations ──────────────────────────────────────────────────────────────
-export const donationsApi = {
-  store: (data: unknown) => api.post('/donations', data),
-  status: (ref: string) => api.get(`/donations/${ref}/status`),
-}
-
 // ── Contact ────────────────────────────────────────────────────────────────
 export const contactApi = {
   send: (data: unknown) => api.post('/contact', data),
@@ -186,13 +180,6 @@ export const adminContactsApi = {
   show: (id: number) => api.get(`/admin/contacts/${id}`),
   markAsRead: (id: number) => api.patch(`/admin/contacts/${id}/read`),
   delete: (id: number) => api.delete(`/admin/contacts/${id}`),
-}
-
-// ── Admin Donations ────────────────────────────────────────────────────────
-export const adminDonationsApi = {
-  list: (params?: Record<string, unknown>) => api.get('/admin/donations', { params }),
-  show: (id: number) => api.get(`/admin/donations/${id}`),
-  updateStatus: (id: number, status: string) => api.patch(`/admin/donations/${id}/status`, { status }),
 }
 
 // ── Admin Settings ─────────────────────────────────────────────────────────

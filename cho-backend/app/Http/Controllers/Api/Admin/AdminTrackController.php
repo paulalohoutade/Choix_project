@@ -81,7 +81,7 @@ class AdminTrackController extends Controller
     public function uploadAudio(Request $request, int $id): JsonResponse
     {
         $request->validate([
-            'audio' => 'required|mimes:mp3,wav,ogg,m4a|max:51200', // 50 Mo max
+            'audio' => 'required|mimes:mp3,wav,ogg,m4a,flac,aac,opus,aiff,wma,oga,m4b,mp2|max:51200', // 50 Mo max
         ]);
 
         $track = Track::findOrFail($id);
