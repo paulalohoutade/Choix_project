@@ -64,7 +64,7 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Desktop nav — Aligné à droite */}
+          {/* Desktop nav — Alignée à droite */}
           <nav className="hidden lg:flex items-center gap-1 h-full">
             {links.map((l) => (
               <NavLink
@@ -76,8 +76,8 @@ export default function Header() {
                     'relative px-3 py-5 text-sm font-semibold tracking-wide font-body transition-colors duration-150',
                     'after:absolute after:top-0 after:left-0 after:right-0 after:h-[4px] after:rounded-b after:transition-all after:duration-150',
                     isActive
-                      ? 'text-white after:bg-amber-400 bg-white/5'
-                      : 'text-white hover:text-amber-400 after:bg-transparent'
+                      ? 'text-white after:bg-yellow-400 bg-white/5'
+                      : 'text-white hover:text-yellow-400 after:bg-transparent'
                   )
                 }
               >
@@ -111,8 +111,8 @@ export default function Header() {
                   clsx(
                     'block px-4 py-3 text-sm font-semibold font-body transition-colors border-l-[4px]',
                     isActive
-                      ? 'text-white border-amber-400 bg-white/5'
-                      : 'text-white/80 hover:text-amber-400 border-transparent hover:bg-white/5'
+                      ? 'text-white border-yellow-400 bg-white/5'
+                      : 'text-white/80 hover:text-yellow-400 border-transparent hover:bg-white/5'
                   )
                 }
               >

@@ -24,11 +24,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           style: {
             background: '#1A3A5C',
             color: '#F5F0E8',
-            border: '1px solid #C9A84C',
+            border: '1px solid #facc15',
             borderRadius: '8px',
             fontFamily: 'Crimson Pro, serif',
           },
-          success: { iconTheme: { primary: '#C9A84C', secondary: '#1A3A5C' } },
+          success: { iconTheme: { primary: '#facc15', secondary: '#1A3A5C' } },
           error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
         }}
       />

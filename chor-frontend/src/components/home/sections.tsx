@@ -46,7 +46,7 @@ export function HeroSection() {
       {/* Dégradé doré subtil en haut */}
       <div className="absolute inset-0"
         style={{
-          background: 'linear-gradient(to bottom, rgba(201,168,76,0.08) 0%, transparent 40%, rgba(15,34,54,0.5) 100%)'
+          background: 'linear-gradient(to bottom, rgba(250,204,21,0.08) 0%, transparent 40%, rgba(15,34,54,0.5) 100%)'
         }}
       />
 
