@@ -26,7 +26,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             color: '#F5F0E8',
             border: '1px solid #facc15',
             borderRadius: '8px',
-            fontFamily: 'Crimson Pro, serif',
+            fontFamily: 'Montserrat, sans-serif',
           },
           success: { iconTheme: { primary: '#facc15', secondary: '#1A3A5C' } },
           error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },

@@ -15,8 +15,8 @@ export default {
         'cec-anthracite': '#383838',
       },
       fontFamily: {
-        display: ['"Playfair Display"', 'Georgia', 'serif'],
-        body:    ['"Crimson Pro"', 'Georgia', 'serif'],
+        display: ['"Montserrat"', 'sans-serif'],
+        body:    ['"Montserrat"', 'sans-serif'],
         mono:    ['"Space Mono"', 'monospace'],
       },
       boxShadow: {

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Music } from 'lucide-react'
+import { Music, Mail } from 'lucide-react'
 
 function FacebookLogo({ size = 16, className = '' }: { size?: number; className?: string }) {
   return (
@@ -21,18 +21,6 @@ function InstagramLogo({ size = 16, className = '' }: { size?: number; className
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-    </svg>
-  )
-}
-
-function GmailLogo({ size = 16, className = '' }: { size?: number; className?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
-      <rect x="1.5" y="3.5" width="21" height="17" rx="2.5" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M4 7.5 8 15.5" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" />
-      <path d="M8 15.5 12 8.5" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" />
-      <path d="M12 8.5 16 15.5" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" />
-      <path d="M16 15.5 20 7.5" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" />
     </svg>
   )
 }
@@ -113,7 +101,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center hover:border-cec-gold hover:text-cec-gold transition-colors"
+                  className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center"
                 >
                   <Icon size={16} />
                 </a>
@@ -144,7 +132,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3 text-sm text-white">
               <li className="flex items-center gap-2">
-                <GmailLogo size={16} className="text-white shrink-0" />
+                <Mail size={16} className="text-white shrink-0" />
                 <a href="mailto:paulalohoutade7@gmail.com" className="hover:text-blue-600 hover:underline transition-colors">
                   paulalohoutade7@gmail.com
                 </a>
