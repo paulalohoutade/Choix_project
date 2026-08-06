@@ -41,7 +41,7 @@ export default function APropos() {
             <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-cec-gold/30 shadow-gold bg-cec-blue/5">
               <img
                 src="/logo.png"
-                alt="Logo Chorale CEC"
+                alt="Logo Chorale Hefzibah"
                 className="w-full h-full object-contain p-4"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none'
@@ -65,7 +65,7 @@ export default function APropos() {
             </h2>
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
-                La Chorale CEC est le chœur officiel de l'Église du Christianisme Céleste.
+                La Chorale Hefzibah est le chœur officiel de l'Église du Christianisme Céleste.
                 Fondée pour glorifier Dieu à travers le chant et la musique, elle rassemble des fidèles
                 passionnés unis par leur amour de la louange et de l'adoration.
               </p>
@@ -75,7 +75,7 @@ export default function APropos() {
                 et élèvent les âmes vers le Seigneur.
               </p>
               <p>
-                Aujourd'hui, la Chorale CEC continue sa mission avec ferveur :
+                Aujourd'hui, la Chorale Hefzibah continue sa mission avec ferveur :
                 chanter la gloire de Dieu dans la joie, la prière et la fraternité.
               </p>
             </div>

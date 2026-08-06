@@ -10,7 +10,7 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
         $settings = [
-            'site_name'          => 'Chorale CEC',
+            'site_name'          => 'Chorale Hefzibah',
             'site_description'   => 'Chorale officielle de l\'Église du Christianisme Céleste',
             'site_logo'          => '',
             'facebook_url'       => 'https://facebook.com/chorale-cec',

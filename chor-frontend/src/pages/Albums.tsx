@@ -12,7 +12,7 @@ export default function Albums() {
     <div>
       <PageHero
         title="Discographie"
-        subtitle="Toute la musique de la Chorale CEC"
+        subtitle="Toute la musique de la Chorale Hefzibah"
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         {isLoading ? (

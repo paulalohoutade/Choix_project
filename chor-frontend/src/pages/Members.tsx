@@ -11,7 +11,7 @@ export default function Members() {
 
   return (
     <div>
-      <PageHero title="Nos Membres" subtitle="L'équipe qui fait vivre la Chorale CEC" />
+      <PageHero title="Nos Membres" subtitle="L'équipe qui fait vivre la Chorale Hefzibah" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         {isLoading ? (

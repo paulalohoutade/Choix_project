@@ -39,7 +39,7 @@ export default function Header() {
                             group-hover:scale-105 transition-transform">
               <img
                 src="/logo.png"
-                alt="Logo Chorale CEC"
+                alt="Logo Chorale Hefzibah"
                 className="w-full h-full object-contain"
                 onError={(e) => {
                   const t = e.currentTarget

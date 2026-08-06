@@ -62,7 +62,7 @@ export default function ResetPassword() {
               <Music size={26} className="text-cec-blue" />
             </div>
             <h1 className="font-display text-2xl font-bold text-white">Nouveau mot de passe</h1>
-            <p className="text-white/60 text-sm mt-1">Chorale CEC</p>
+            <p className="text-white/60 text-sm mt-1">Chorale Hefzibah</p>
           </div>
 
           <div className="px-8 py-8">
@@ -134,7 +134,7 @@ export default function ResetPassword() {
         </div>
 
         <p className="text-center text-white/30 text-xs mt-6">
-          © {new Date().getFullYear()} Chorale CEC
+          © {new Date().getFullYear()} Chorale Hefzibah
         </p>
       </div>
     </div>

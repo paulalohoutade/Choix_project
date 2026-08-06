@@ -37,6 +37,6 @@ class ResetPasswordNotification extends Notification
             ->action('Réinitialiser mon mot de passe', $url)
             ->line('Ce lien expirera dans **60 minutes**.')
             ->line('Si vous n\'avez pas effectué cette demande, ignorez cet email — votre compte reste sécurisé.')
-            ->salutation('La Chorale CEC');
+            ->salutation('La Chorale Hefzibah');
     }
 }

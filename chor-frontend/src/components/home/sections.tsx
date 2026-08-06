@@ -57,7 +57,7 @@ export function HeroSection() {
         <div className="mb-3">
           <img
             src="/logo.png"
-            alt="Logo Chorale CEC"
+            alt="Logo Chorale Hefzibah"
             className="w-44 h-44 object-contain mx-auto drop-shadow-2xl"
             onError={(e) => {
               // Si logo.png n'existe pas encore, affiche un placeholder
@@ -138,13 +138,13 @@ export function FeaturedAlbum() {
   const { loadQueue } = usePlayerStore()
 
   if (isLoading) return (
-    <section className="bg-cec-blue py-16 px-4">
+    <section className="bg-sky-200 py-10 px-4">
       <div className="max-w-4xl mx-auto flex gap-8 animate-pulse">
-        <div className="w-48 h-48 bg-white/10 rounded-xl flex-shrink-0" />
+        <div className="w-48 h-48 bg-black/10 rounded-xl flex-shrink-0" />
         <div className="flex-1 space-y-4 pt-4">
-          <div className="h-4 bg-white/10 rounded w-24" />
-          <div className="h-8 bg-white/20 rounded w-2/3" />
-          <div className="h-4 bg-white/10 rounded w-32" />
+          <div className="h-4 bg-black/10 rounded w-24" />
+          <div className="h-8 bg-black/10 rounded w-2/3" />
+          <div className="h-4 bg-black/10 rounded w-32" />
         </div>
       </div>
     </section>
@@ -153,30 +153,38 @@ export function FeaturedAlbum() {
   if (!album) return null
 
   return (
-    <section className="bg-cec-blue py-16 px-4 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-cec-gold/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+    <section className="bg-sky-200 py-10 px-4 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-white/20 rounded-full -translate-y-1/2 translate-x-1/2" />
       <div className="max-w-4xl mx-auto relative">
-        <p className="text-cec-gold/70 text-sm uppercase tracking-widest font-semibold mb-6">
+        <p className="text-black/60 text-sm uppercase tracking-widest font-semibold mb-6">
           Album vedette
         </p>
         <div className="flex flex-col sm:flex-row items-center gap-8">
           {/* Cover */}
-          <div className="w-48 h-48 rounded-xl overflow-hidden shadow-gold flex-shrink-0">
-            {album.cover_url ? (
-              <img src={album.cover_url} alt={album.title} className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full bg-cec-blue-light flex items-center justify-center">
-                <Music size={48} className="text-white/20" />
-              </div>
-            )}
+          <div className="w-48 h-48 rounded-full overflow-hidden shadow-gold flex-shrink-0">
+            <div className="relative w-full h-full bg-black rounded-full animate-spin [animation-duration:8s]">
+              <div className="absolute inset-0 rounded-full border-2 border-white/10 m-5" />
+              <div className="absolute inset-0 rounded-full border-2 border-white/10 m-10" />
+              <div className="absolute inset-0 rounded-full border-2 border-white/10 m-14" />
+              {album.cover_url ? (
+                <div className="absolute inset-0 m-14 rounded-full overflow-hidden">
+                  <img src={album.cover_url} alt={album.title} className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div className="absolute inset-0 m-14 rounded-full bg-cec-blue-light flex items-center justify-center">
+                  <Music size={32} className="text-black/40" />
+                </div>
+              )}
+              <div className="absolute inset-0 m-auto w-3 h-3 rounded-full bg-white/40" />
+            </div>
           </div>
 
           {/* Info */}
           <div className="text-center sm:text-left">
-            <h2 className="font-display text-3xl font-bold text-white mb-1">{album.title}</h2>
-            <p className="text-cec-gold/70 mb-4">{album.release_year}</p>
+            <h2 className="font-display text-3xl font-bold text-black mb-1">{album.title}</h2>
+            <p className="text-black/60 mb-4">{album.release_year}</p>
             {album.description && (
-              <p className="text-white/60 text-sm mb-6 line-clamp-2">{album.description}</p>
+              <p className="text-black/60 text-sm mb-6 line-clamp-2">{album.description}</p>
             )}
             <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
               {album.tracks && album.tracks.length > 0 && (
@@ -191,8 +199,8 @@ export function FeaturedAlbum() {
               )}
               <Link
                 to={`/albums/${album.slug}`}
-                className="border border-white/30 text-white px-6 py-2.5 rounded-full
-                           hover:bg-white/10 transition-colors text-sm"
+                className="border border-black/30 text-black px-6 py-2.5 rounded-full
+                           hover:bg-black/5 transition-colors text-sm"
               >
                 Voir les titres
               </Link>

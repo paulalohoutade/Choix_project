@@ -42,7 +42,7 @@ export default function Dashboard() {
           <Music size={18} className="text-cec-blue" />
         </div>
         <div>
-          <p className="font-display font-bold text-sm">Chorale CEC</p>
+          <p className="font-display font-bold text-sm">Chorale Hefzibah</p>
           <p className="text-white/40 text-xs">Administration</p>
         </div>
       </div>
@@ -128,7 +128,7 @@ export default function Dashboard() {
           <button onClick={() => setSidebarOpen(true)} className="text-gray-600">
             <Menu size={22} />
           </button>
-          <p className="font-semibold text-cec-blue">Admin — Chorale CEC</p>
+          <p className="font-semibold text-cec-blue">Admin — Chorale Hefzibah</p>
         </div>
 
         {/* Page content */}

@@ -35,11 +35,24 @@ class AdminTrackController extends Controller
             'is_downloadable'  => 'boolean',
         ]);
 
-        $validated['slug'] = Str::slug($validated['title']);
+        $validated['slug'] = $this->uniqueSlug($validated['title']);
 
         $track = Track::create($validated);
 
         return response()->json($track, 201);
+    }
+
+    private function uniqueSlug(string $title): string
+    {
+        $base = Str::slug($title) ?: 'piste';
+        $slug = $base;
+        $i = 1;
+
+        while (Track::where('slug', $slug)->exists()) {
+            $slug = $base . '-' . $i++;
+        }
+
+        return $slug;
     }
 
     public function show(int $id): JsonResponse
@@ -81,7 +94,22 @@ class AdminTrackController extends Controller
     public function uploadAudio(Request $request, int $id): JsonResponse
     {
         $request->validate([
-            'audio' => 'required|mimes:mp3,wav,ogg,m4a,flac,aac,opus,aiff,wma,oga,m4b,mp2|max:51200', // 50 Mo max
+            'audio' => ['required', 'file', 'max:512000', function ($attribute, $value, $fail) {
+                $allowed = ['mp3', 'wav', 'ogg', 'm4a', 'flac', 'aac', 'opus', 'aiff', 'wma', 'oga', 'm4b', 'mp2'];
+                $ext     = strtolower($value->getClientOriginalExtension());
+
+                if (in_array($ext, $allowed, true)) {
+                    return;
+                }
+
+                $mime = $value->getMimeType();
+                if (str_starts_with($mime, 'audio/')
+                    || in_array($mime, ['video/mp4', 'application/ogg', 'application/octet-stream'], true)) {
+                    return;
+                }
+
+                $fail('Le fichier audio n\'est pas valide. Formats acceptés : mp3, wav, ogg, m4a, flac, aac, opus, aiff, wma, oga, m4b, mp2.');
+            }],
         ]);
 
         $track = Track::findOrFail($id);

@@ -81,7 +81,7 @@ export default function Footer() {
               <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
                 <img
                   src="/logo.png"
-                  alt="Logo Chorale CEC"
+                  alt="Logo Chorale Hefzibah"
                   className="w-full h-full object-contain"
                   onError={(e) => {
                     const t = e.currentTarget
@@ -144,19 +144,19 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3 text-sm text-white">
               <li className="flex items-center gap-2">
-                <GmailLogo size={16} className="text-cec-gold shrink-0" />
-                <a href="mailto:contactchorale@gmail.com" className="hover:text-blue-600 hover:underline transition-colors">
-                  contactchorale@gmail.com
+                <GmailLogo size={16} className="text-white shrink-0" />
+                <a href="mailto:paulalohoutade7@gmail.com" className="hover:text-blue-600 hover:underline transition-colors">
+                  paulalohoutade7@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2">
-                <WhatsAppLogo size={16} className="text-cec-gold shrink-0" />
+                <WhatsAppLogo size={16} className="text-white shrink-0" />
                 <a href="tel:+2290195807402" className="hover:text-blue-600 hover:underline transition-colors">
                   +229 01 95 80 74 02
                 </a>
               </li>
               <li className="flex items-start gap-2">
-                <GoogleMapsLogo size={16} className="mt-0.5 text-cec-gold shrink-0" />
+                <GoogleMapsLogo size={16} className="mt-0.5 text-white shrink-0" />
                 <span>Avrankou, Bénin</span>
               </li>
             </ul>

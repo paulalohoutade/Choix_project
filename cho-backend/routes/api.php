@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 // ── Controllers publics ───────────────────────────────────────────────────
 use App\Http\Controllers\Api\AlbumController;
 use App\Http\Controllers\Api\TrackController;
+use App\Http\Controllers\Api\TrackAudioController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\GalleryController;
@@ -41,6 +42,9 @@ Route::prefix('v1')->group(function () {
 
     // Piste : incrémenter le compteur d'écoute
     Route::post('tracks/{id}/play',    [TrackController::class, 'incrementPlay']);
+
+    // Diffuser l'audio avec support des requêtes Range
+    Route::get('tracks/{track}/audio', [TrackAudioController::class, 'stream'])->name('tracks.audio');
 
     // Événements
     Route::get('events',               [EventController::class, 'index']);

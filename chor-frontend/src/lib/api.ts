@@ -5,7 +5,6 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api/v1',
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
   },
 })
 
@@ -103,7 +102,7 @@ export const adminAlbumsApi = {
   toggleFeatured: (id: number) => api.post(`/admin/albums/${id}/toggle-featured`),
   uploadCover: (id: number, file: File) => {
     const fd = new FormData(); fd.append('cover', file)
-    return api.post(`/admin/albums/${id}/cover`, fd, { headers: { 'Content-Type': 'multipart/form-data' } })
+    return api.post(`/admin/albums/${id}/cover`, fd)
   },
 }
 
@@ -115,7 +114,7 @@ export const adminTracksApi = {
   delete: (id: number) => api.delete(`/admin/tracks/${id}`),
   uploadAudio: (id: number, file: File) => {
     const fd = new FormData(); fd.append('audio', file)
-    return api.post(`/admin/tracks/${id}/audio`, fd, { headers: { 'Content-Type': 'multipart/form-data' } })
+    return api.post(`/admin/tracks/${id}/audio`, fd)
   },
   reorder: (data: unknown) => api.post('/admin/tracks/reorder', data),
 }
@@ -129,7 +128,7 @@ export const adminEventsApi = {
   delete: (id: number) => api.delete(`/admin/events/${id}`),
   uploadCover: (id: number, file: File) => {
     const fd = new FormData(); fd.append('cover', file)
-    return api.post(`/admin/events/${id}/cover`, fd, { headers: { 'Content-Type': 'multipart/form-data' } })
+    return api.post(`/admin/events/${id}/cover`, fd)
   },
 }
 
@@ -143,7 +142,7 @@ export const adminPostsApi = {
   publish: (id: number) => api.post(`/admin/posts/${id}/publish`),
   uploadCover: (id: number, file: File) => {
     const fd = new FormData(); fd.append('cover', file)
-    return api.post(`/admin/posts/${id}/cover`, fd, { headers: { 'Content-Type': 'multipart/form-data' } })
+    return api.post(`/admin/posts/${id}/cover`, fd)
   },
 }
 
@@ -154,7 +153,7 @@ export const adminGalleryApi = {
     const fd = new FormData()
     fd.append('file', file)
     Object.entries(data).forEach(([k, v]) => fd.append(k, v))
-    return api.post('/admin/gallery/upload', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
+    return api.post('/admin/gallery/upload', fd)
   },
   update: (id: number, data: unknown) => api.put(`/admin/gallery/${id}`, data),
   delete: (id: number) => api.delete(`/admin/gallery/${id}`),
@@ -169,7 +168,7 @@ export const adminMembersApi = {
   delete: (id: number) => api.delete(`/admin/members/${id}`),
   uploadPhoto: (id: number, file: File) => {
     const fd = new FormData(); fd.append('photo', file)
-    return api.post(`/admin/members/${id}/photo`, fd, { headers: { 'Content-Type': 'multipart/form-data' } })
+    return api.post(`/admin/members/${id}/photo`, fd)
   },
   reorder: (data: unknown) => api.post('/admin/members/reorder', data),
 }

@@ -64,7 +64,7 @@ export default function AlbumsManager() {
       await uploadAudio.mutateAsync({ id, file })
       invalidate(albumId)
       toast.success('Audio uploadé.')
-    } catch { toast.error('Erreur upload audio.') }
+    } catch (err) { toast.error(errMsg(err)) }
   }
 
   const toggleExpand = (id: number) => {
@@ -108,7 +108,7 @@ export default function AlbumsManager() {
               invalidate(expandedAlbum.id)
               toast.success('Piste ajoutée.')
               setShowTrackForm(false)
-            } catch { toast.error('Erreur.') }
+            } catch (err) { toast.error(errMsg(err)) }
           }}
         />
       )}
@@ -335,14 +335,25 @@ function AlbumForm({ album, onClose, onSaved }: { album: Album | null; onClose: 
   )
 }
 
+function errMsg(err: unknown): string {
+  const e = err as { response?: { data?: { message?: string } }; message?: string }
+  return e?.response?.data?.message ?? e?.message ?? 'Erreur.'
+}
+
 function parseDuration(input: string): number | null {
-  const m = input.trim().match(/^(?:(\d+):)?(\d{1,2})(?::(\d{2}))?$/)
-  if (!m) return null
-  const hours = m[1] ? Number(m[1]) : 0
-  const minutes = Number(m[2])
-  const seconds = m[3] ? Number(m[3]) : 0
-  if (seconds > 59 || minutes > 59) return null
-  return hours * 3600 + minutes * 60 + seconds
+  const t = input.trim()
+  if (!t) return null
+  const parts = t.split(':').map((p) => {
+    const n = Number(p)
+    return Number.isInteger(n) && n >= 0 ? n : NaN
+  })
+  if (parts.some(Number.isNaN) || parts.length > 3) return null
+  if (parts.length === 1) return parts[0]
+  const seconds = parts[parts.length - 1]
+  if (seconds > 59) return null
+  if (parts.length === 2) return parts[0] * 60 + seconds
+  if (parts[1] > 59) return null
+  return parts[0] * 3600 + parts[1] * 60 + seconds
 }
 
 function TrackForm({

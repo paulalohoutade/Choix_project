@@ -62,7 +62,7 @@ class Track extends Model
     public function getAudioUrlAttribute(): ?string
     {
         return $this->audio_path
-            ? asset('storage/' . $this->audio_path)
+            ? route('tracks.audio', ['track' => $this->id])
             : null;
     }
 
