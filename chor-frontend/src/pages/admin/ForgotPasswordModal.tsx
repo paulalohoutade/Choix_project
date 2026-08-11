@@ -64,7 +64,7 @@ export default function ForgotPasswordModal({ onClose }: Props) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@chorale-cec.org"
+                  placeholder="admin@chorale-ecc.org"
                   required
                   className="input-field"
                   autoFocus

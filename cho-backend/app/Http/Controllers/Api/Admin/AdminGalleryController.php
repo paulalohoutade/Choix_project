@@ -73,17 +73,21 @@ class AdminGalleryController extends Controller
     public function upload(Request $request): JsonResponse
     {
         $request->validate([
-            'file'     => 'required|file|mimes:jpg,jpeg,png,webp,gif|max:5120',
+            'file'     => 'required|file|mimes:jpg,jpeg,png,webp,gif,mp4,webm,mov,ogg,avi,mkv,m4v|max:204800',
             'title'    => 'nullable|string|max:200',
+            'type'     => 'nullable|in:photo,video',
             'event_id' => 'nullable|exists:events,id',
         ]);
 
         $path = $request->file('file')->store('gallery', 'public');
 
+        $mime = $request->file('file')->getMimeType();
+        $type = $request->type ?? (str_starts_with($mime, 'video/') ? 'video' : 'photo');
+
         $item = GalleryItem::create([
             'title'    => $request->title,
             'file_path'=> $path,
-            'type'     => 'photo',
+            'type'     => $type,
             'event_id' => $request->event_id,
         ]);
 

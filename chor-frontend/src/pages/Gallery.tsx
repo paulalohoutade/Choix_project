@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Youtube } from 'lucide-react'
+import { X, Youtube, Play } from 'lucide-react'
 import { useGallery } from '@/hooks'
 import { PageHero, EmptyState } from '@/components/ui'
 import type { GalleryItem } from '@/types'
@@ -58,7 +58,22 @@ export default function Gallery() {
                 className="relative aspect-square cursor-pointer overflow-hidden rounded-lg
                            bg-stone-100 group"
               >
-                {item.file_url ? (
+                {item.type === 'video' && item.file_url ? (
+                  <div className="w-full h-full relative bg-black">
+                    <video
+                      src={item.file_url}
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-cover opacity-80"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="bg-black/50 rounded-full p-3">
+                        <Play size={28} className="text-white" fill="currentColor" />
+                      </span>
+                    </div>
+                  </div>
+                ) : item.file_url ? (
                   <img
                     src={item.file_url}
                     alt={item.title ?? ''}
@@ -98,7 +113,14 @@ export default function Gallery() {
           </button>
 
           <div className="max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
-            {selected.file_url ? (
+            {selected.type === 'video' && selected.file_url ? (
+              <video
+                src={selected.file_url}
+                controls
+                autoPlay
+                className="max-w-full max-h-[80vh] mx-auto rounded-xl"
+              />
+            ) : selected.file_url ? (
               <img
                 src={selected.file_url}
                 alt={selected.title ?? ''}

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Upload, Trash2, X } from 'lucide-react'
+import { Upload, Trash2, X, Play } from 'lucide-react'
 import { useAdminGallery, useAdminGalleryMutations } from '@/hooks'
 import { AdminPageHeader, AdminTable } from './Dashboard'
 import { Button } from '@/components/ui'
@@ -95,7 +95,16 @@ export default function GalleryManager() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
           {items.map(item => (
             <div key={item.id} className="group relative aspect-square rounded-lg overflow-hidden bg-stone-100">
-              {item.file_url && (
+              {item.type === 'video' && item.file_url ? (
+                <div className="w-full h-full relative bg-black">
+                  <video src={item.file_url} muted playsInline preload="metadata" className="w-full h-full object-cover opacity-80" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="bg-black/50 rounded-full p-2">
+                      <Play size={20} className="text-white" fill="currentColor" />
+                    </span>
+                  </div>
+                </div>
+              ) : item.file_url && (
                 <img src={item.file_url} alt={item.title ?? ''} className="w-full h-full object-cover" />
               )}
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity

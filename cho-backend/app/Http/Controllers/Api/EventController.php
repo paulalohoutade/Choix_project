@@ -17,9 +17,7 @@ class EventController extends Controller
             $query->where('type', $request->type);
         }
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
+        $query->statusIs($request->filled('status') ? $request->status : null);
 
         $events = $query->orderByDesc('event_date')->paginate(12);
 
@@ -28,7 +26,7 @@ class EventController extends Controller
 
     public function upcoming(): JsonResponse
     {
-        $events = Event::upcoming()->take(3)->get();
+        $events = Event::upcoming()->orderBy('event_date')->take(3)->get();
 
         return response()->json($events);
     }

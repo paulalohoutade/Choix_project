@@ -58,7 +58,7 @@ export default function AdminLogin() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@chorale-cec.org"
+                  placeholder="admin@chorale-ecc.org"
                   required
                   className="input-field"
                   autoComplete="email"
@@ -111,7 +111,7 @@ export default function AdminLogin() {
             <p className="text-center text-xs text-gray-400 mt-5">
               Pas encore de compte ?{' '}
               <a
-                href="mailto:admin@chorale-cec.org?subject=Demande%20d%27accès%20administration"
+                href="mailto:admin@chorale-ecc.org?subject=Demande%20d%27accès%20administration"
                 className="text-cec-blue hover:underline font-medium"
               >
                 Demander un accès
