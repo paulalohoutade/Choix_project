@@ -40,8 +40,9 @@ Route::prefix('v1')->group(function () {
     Route::get('albums/{slug}',        [AlbumController::class, 'show']);
     Route::get('albums/{slug}/tracks', [AlbumController::class, 'tracks']);
 
-    // Piste : incrémenter le compteur d'écoute
-    Route::post('tracks/{id}/play',    [TrackController::class, 'incrementPlay']);
+    // Piste : incrémenter le compteur d'écoute + enregistrer la durée
+    Route::post('tracks/{id}/play',     [TrackController::class, 'incrementPlay']);
+    Route::post('tracks/{id}/duration', [TrackController::class, 'updateDuration']);
 
     // Diffuser l'audio avec support des requêtes Range
     Route::get('tracks/{track}/audio', [TrackAudioController::class, 'stream'])->name('tracks.audio');

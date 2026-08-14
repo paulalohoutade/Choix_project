@@ -66,7 +66,8 @@ function PlayerBar({ track }: { track: NonNullable<ReturnType<typeof useCurrentT
             step={0.001}
             value={progress}
             onChange={(e) => seekTo(Number(e.target.value))}
-            className="flex-1 accent-cec-gold cursor-pointer"
+            style={{ '--range-value': `${progress * 100}%` } as React.CSSProperties}
+            className="flex-1 cursor-pointer"
           />
           <span className="text-white/50 text-xs font-mono w-10">{fmt(duration)}</span>
         </div>
@@ -86,7 +87,8 @@ function PlayerBar({ track }: { track: NonNullable<ReturnType<typeof useCurrentT
             step={0.01}
             value={volume}
             onChange={(e) => setVolume(Number(e.target.value))}
-            className="w-20 accent-cec-gold cursor-pointer"
+            style={{ '--range-value': `${volume * 100}%` } as React.CSSProperties}
+            className="w-20 cursor-pointer"
           />
         </div>
 

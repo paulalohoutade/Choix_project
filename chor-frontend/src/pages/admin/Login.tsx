@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { authApi } from '@/lib/api'
 import toast from 'react-hot-toast'
-import { Music, Lock } from 'lucide-react'
+import { Music, Lock, ChevronRight } from 'lucide-react'
 import ForgotPasswordModal from './ForgotPasswordModal'
 
 export default function AdminLogin() {
@@ -11,6 +11,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [showForgot, setShowForgot] = useState(false)
+  const [photoFailed, setPhotoFailed] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,27 +29,101 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-cec-dark flex items-center justify-center px-4">
+    <div className="min-h-screen bg-cec-dark flex items-center justify-center px-4 py-10 relative">
       {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px]
-                        rounded-full bg-cec-gold/5 -translate-y-1/2" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[700px]
+                        rounded-full bg-cec-gold/10 -translate-y-1/2" />
       </div>
 
-      <div className="w-full max-w-sm relative">
-        {/* Card */}
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-          {/* Header */}
-          <div className="bg-cec-blue px-8 py-8 text-center">
-            <div className="w-14 h-14 rounded-full bg-cec-gold flex items-center justify-center mx-auto mb-4">
-              <Music size={26} className="text-cec-blue" />
-            </div>
-            <h1 className="font-display text-2xl font-bold text-white">Administration</h1>
-            <p className="text-white/60 text-sm mt-1">Chorale Hefzibah</p>
-          </div>
+      {/* Carte centrée */}
+      <div className="relative w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden lg:flex">
+        {/* ── Panneau photo (gauche, desktop) ──────────────────────────── */}
+        <div className="relative hidden lg:block lg:w-1/2 xl:w-[55%]">
+          {/* Dégradé de fond (visible si la photo n'est pas chargée) */}
+          <div className="absolute inset-0 bg-gradient-to-br from-cec-blue via-cec-blue-mid to-cec-dark" />
 
-          {/* Form */}
-          <div className="px-8 py-8">
+          {/* Photo */}
+          {!photoFailed && (
+            <img
+              src="/login-photo.jpg"
+              alt="Chorale Hefzibah"
+              className="absolute inset-0 w-full h-full object-cover"
+              onError={() => setPhotoFailed(true)}
+            />
+          )}
+          {/* Voile sombre pour la lisibilité */}
+          <div className="absolute inset-0 bg-gradient-to-t from-cec-dark/90 via-cec-dark/30 to-cec-blue/40" />
+
+          {/* Contenu du panneau */}
+          <div className="relative z-10 w-full h-full flex flex-col justify-between p-10 xl:p-14">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-white/10 ring-1 ring-white/20">
+                <img
+                  src="/logo.png"
+                  alt="Logo Chorale Hefzibah"
+                  className="w-full h-full object-contain"
+                  onError={(e) => {
+                    const t = e.currentTarget
+                    t.style.display = 'none'
+                    const fallback = t.nextElementSibling as HTMLElement
+                    if (fallback) fallback.style.display = 'flex'
+                  }}
+                />
+                <div className="w-full h-full bg-cec-gold items-center justify-center hidden">
+                  <Music size={20} className="text-cec-blue" />
+                </div>
+              </div>
+              <div className="leading-tight">
+                <p className="font-display text-white font-bold text-lg">Chorale Hefzibah</p>
+                <p className="text-cec-gold-light text-[10px] tracking-widest uppercase">Espace administration</p>
+              </div>
+            </div>
+
+            <div className="max-w-md">
+              <p className="text-3xl xl:text-4xl font-display font-bold text-white leading-tight">
+                Louez l'Éternel, car{' '}
+                <span className="text-cec-gold">Il est bon.</span>
+              </p>
+              <p className="text-white/70 mt-4 text-sm leading-relaxed">
+                Gérez les albums, les événements, les actualités et la galerie de la chorale.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Panneau formulaire (droite) ──────────────────────────────── */}
+        <div className="flex-1 flex items-center justify-center px-6 sm:px-8 py-10">
+          <div className="w-full max-w-sm">
+            {/* Logo (visible sur mobile, panneau photo caché) */}
+            <div className="flex items-center justify-center gap-3 mb-8 lg:hidden">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-cec-blue/10">
+                <img
+                  src="/logo.png"
+                  alt="Logo Chorale Hefzibah"
+                  className="w-full h-full object-contain"
+                  onError={(e) => {
+                    const t = e.currentTarget
+                    t.style.display = 'none'
+                    const fallback = t.nextElementSibling as HTMLElement
+                    if (fallback) fallback.style.display = 'flex'
+                  }}
+                />
+                <div className="w-full h-full bg-cec-gold items-center justify-center hidden">
+                  <Music size={20} className="text-cec-blue" />
+                </div>
+              </div>
+              <div className="leading-tight">
+                <p className="font-display text-cec-blue font-bold text-lg">Chorale Hefzibah</p>
+                <p className="text-cec-gold text-[10px] tracking-widest uppercase">Espace administration</p>
+              </div>
+            </div>
+
+            <div className="text-center mb-8">
+              <h1 className="font-display text-2xl font-bold text-cec-blue">Administration</h1>
+              <p className="text-gray-400 text-sm mt-1">Connectez-vous pour continuer</p>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
@@ -112,17 +187,17 @@ export default function AdminLogin() {
               Pas encore de compte ?{' '}
               <a
                 href="mailto:admin@chorale-ecc.org?subject=Demande%20d%27accès%20administration"
-                className="text-cec-blue hover:underline font-medium"
+                className="inline-flex items-center gap-0.5 text-cec-blue hover:underline font-medium"
               >
-                Demander un accès
+                Demander un accès <ChevronRight size={12} />
               </a>
+            </p>
+
+            <p className="text-center text-gray-300 text-xs mt-6">
+              © {new Date().getFullYear()} Chorale Hefzibah
             </p>
           </div>
         </div>
-
-        <p className="text-center text-white/30 text-xs mt-6">
-          © {new Date().getFullYear()} Chorale Hefzibah
-        </p>
       </div>
 
       {showForgot && <ForgotPasswordModal onClose={() => setShowForgot(false)} />}

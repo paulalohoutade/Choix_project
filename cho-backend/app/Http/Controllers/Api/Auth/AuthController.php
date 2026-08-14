@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller
 {
@@ -16,7 +19,7 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
@@ -26,12 +29,12 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $user  = Auth::user();
+        $user = Auth::user();
         $token = $user->createToken('chorale-admin')->plainTextToken;
 
         return response()->json([
             'token' => $token,
-            'user'  => $user,
+            'user' => $user,
         ]);
     }
 
@@ -56,17 +59,56 @@ class AuthController extends Controller
     }
 
     /**
-     * Mot de passe oublié (à compléter avec un mailer)
+     * Étape 1 — Envoie un email avec le lien de réinitialisation
+     * Le lien pointe vers le frontend React : /admin/reset-password?token=...&email=...
      */
     public function forgotPassword(Request $request): JsonResponse
     {
-        $request->validate(['email' => 'required|email']);
+        $request->validate([
+            'email' => 'required|email',
+        ]);
 
-        // TODO: envoyer un email de réinitialisation
-        // Password::sendResetLink($request->only('email'));
+        Password::sendResetLink($request->only('email'));
 
         return response()->json([
-            'message' => 'Si cet email existe, un lien de réinitialisation a été envoyé.',
+            'message' => 'Si un compte existe avec cet email, un lien de réinitialisation a été envoyé.',
+        ]);
+    }
+
+    /**
+     * Étape 2 — Réinitialise le mot de passe avec le token reçu par email
+     * Appelé depuis la page /admin/reset-password du frontend
+     */
+    public function resetPassword(Request $request): JsonResponse
+    {
+        $request->validate([
+            'token' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|string',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->save();
+
+                $user->tokens()->delete();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status !== Password::PASSWORD_RESET) {
+            return response()->json([
+                'message' => 'Ce lien de réinitialisation est invalide ou a expiré.',
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => 'Mot de passe réinitialisé avec succès. Vous pouvez vous connecter.',
         ]);
     }
 }

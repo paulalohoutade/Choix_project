@@ -38,8 +38,21 @@ export default function Dashboard() {
     <aside className="flex flex-col h-full bg-cec-dark text-white w-64">
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
-        <div className="w-9 h-9 rounded-full bg-cec-gold flex items-center justify-center">
-          <Music size={18} className="text-cec-blue" />
+        <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0">
+          <img
+            src="/logo.png"
+            alt="Logo Chorale Hefzibah"
+            className="w-full h-full object-contain"
+            onError={(e) => {
+              const t = e.currentTarget
+              t.style.display = 'none'
+              const fallback = t.nextElementSibling as HTMLElement
+              if (fallback) fallback.style.display = 'flex'
+            }}
+          />
+          <div className="w-full h-full bg-cec-gold items-center justify-center hidden">
+            <Music size={16} className="text-cec-blue" />
+          </div>
         </div>
         <div>
           <p className="font-display font-bold text-sm">Chorale Hefzibah</p>

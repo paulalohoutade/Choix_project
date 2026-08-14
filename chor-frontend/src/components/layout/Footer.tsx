@@ -153,11 +153,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white">
+        <div className="border-t border-white/10 mt-10 pt-6 flex items-center justify-center gap-3 text-xs text-white">
           <p>© {new Date().getFullYear()} Chorale Hefzibah — Tous droits réservés</p>
-          <Link to="/admin/login" className="hover:text-white transition-colors">
-            Administration
-          </Link>
         </div>
       </div>
     </footer>

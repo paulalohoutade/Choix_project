@@ -44,6 +44,8 @@ export const albumsApi = {
 // ── Tracks ─────────────────────────────────────────────────────────────────
 export const tracksApi = {
   incrementPlay: (id: number) => api.post(`/tracks/${id}/play`),
+  setDuration: (id: number, durationSeconds: number) =>
+    api.post(`/tracks/${id}/duration`, { duration_seconds: durationSeconds }),
 }
 
 // ── Events ─────────────────────────────────────────────────────────────────

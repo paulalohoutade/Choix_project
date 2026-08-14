@@ -20,6 +20,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 17px;
 }
 
 body {
@@ -51,20 +52,51 @@ input[type='range'] {
   appearance: none;
   height: 4px;
   border-radius: 2px;
-  background: rgba(255,255,255,0.2);
+  background: linear-gradient(
+    to right,
+    var(--cec-gold) 0%,
+    var(--cec-gold) var(--range-value, 0%),
+    rgba(255,255,255,0.2) var(--range-value, 0%),
+    rgba(255,255,255,0.2) 100%
+  );
   outline: none;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: transparent;
 }
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 14px;
   height: 14px;
+  margin-top: -5px;
   border-radius: 50%;
   background: var(--cec-gold);
+  border: 2px solid #fff;
   cursor: pointer;
   transition: transform 0.15s;
 }
 input[type='range']::-webkit-slider-thumb:hover {
   transform: scale(1.3);
+}
+input[type='range']::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: transparent;
+}
+input[type='range']::-moz-range-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--cec-gold);
+}
+input[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--cec-gold);
+  cursor: pointer;
 }
 
 @keyframes scrollPhrases {
