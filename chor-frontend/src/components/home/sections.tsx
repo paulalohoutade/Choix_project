@@ -18,6 +18,34 @@ const SCROLLING_PHRASES = [
   'Chorale Hefzibah — Depuis toujours pour Dieu',
  ]
 
+// Titre qui « défile » caractère par caractère à l'arrivée sur la page
+function RollingTitle({ segments }: { segments: { text: string; className?: string }[] }) {
+  let index = 0
+  return (
+    <h1 className="font-display text-5xl sm:text-6xl lg:text-6xl font-bold text-white
+           leading-tight mb-4 drop-shadow-lg italic">
+      {segments.map((seg, s) => (
+        <span key={s} className={seg.className}>
+          {Array.from(seg.text).map((ch, ci) => {
+            const delay = index++
+            return ch === ' '
+              ? <span key={ci}>&nbsp;</span>
+              : (
+                <span
+                  key={ci}
+                  className="animate-title-in"
+                  style={{ animationDelay: `${delay * 35}ms` }}
+                >
+                  {ch}
+                </span>
+              )
+          })}
+        </span>
+      ))}
+    </h1>
+  )
+}
+
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center">
@@ -81,10 +109,12 @@ export function HeroSection() {
           Église du Christianisme Céleste <br /><br /> Paroisse BEULAH Kouti Kpinlè Centre
         </p>
 
-        <h1 className="font-display text-5xl sm:text-6xl lg:text-6xl font-bold text-white
-               leading-tight mb-4 drop-shadow-lg italic">
-          Chorale <span className="text-yellow-400">Hefzibah "Plaisir de Dieu"</span>
-        </h1>
+        <RollingTitle
+          segments={[
+            { text: 'Chorale ' },
+            { text: 'Hefzibah "Plaisir de Dieu"', className: 'text-yellow-400' },
+          ]}
+        />
 
         {/* ── Texte défilant ───────────────────────────────────────────── */}
         <div className="overflow-hidden h-8 sm:h-10 mb-10 w-full max-w-2xl">

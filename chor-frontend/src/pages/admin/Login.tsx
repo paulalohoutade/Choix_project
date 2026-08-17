@@ -29,7 +29,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-cec-dark flex items-center justify-center px-4 py-10 relative">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-10 relative">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[700px]
@@ -37,9 +37,9 @@ export default function AdminLogin() {
       </div>
 
       {/* Carte centrée */}
-      <div className="relative w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden lg:flex">
+      <div className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 lg:flex">
         {/* ── Panneau photo (gauche, desktop) ──────────────────────────── */}
-        <div className="relative hidden lg:block lg:w-1/2 xl:w-[55%]">
+        <div className="relative hidden lg:block lg:w-1/2 xl:w-[55%] lg:border-r lg:border-gray-200">
           {/* Dégradé de fond (visible si la photo n'est pas chargée) */}
           <div className="absolute inset-0 bg-gradient-to-br from-cec-blue via-cec-blue-mid to-cec-dark" />
 
@@ -53,12 +53,12 @@ export default function AdminLogin() {
             />
           )}
           {/* Voile sombre pour la lisibilité */}
-          <div className="absolute inset-0 bg-gradient-to-t from-cec-dark/90 via-cec-dark/30 to-cec-blue/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-cec-dark/70 via-cec-dark/20 to-cec-blue/20" />
 
           {/* Contenu du panneau */}
-          <div className="relative z-10 w-full h-full flex flex-col justify-between p-10 xl:p-14">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-white/10 ring-1 ring-white/20">
+          <div className="relative z-10 w-full h-full flex flex-col justify-between p-6 xl:p-8">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full overflow-hidden bg-white/10 ring-1 ring-white/20">
                 <img
                   src="/logo.png"
                   alt="Logo Chorale Hefzibah"
@@ -75,28 +75,25 @@ export default function AdminLogin() {
                 </div>
               </div>
               <div className="leading-tight">
-                <p className="font-display text-white font-bold text-lg">Chorale Hefzibah</p>
-                <p className="text-cec-gold-light text-[10px] tracking-widest uppercase">Espace administration</p>
+                <p className="font-display text-white font-bold text-base">Chorale Hefzibah</p>
+                <p className="text-cec-gold-light text-[9px] tracking-widest uppercase">Espace administration</p>
               </div>
             </div>
 
             <div className="max-w-md">
-              <p className="text-3xl xl:text-4xl font-display font-bold text-white leading-tight">
+              <p className="text-xl xl:text-2xl font-display font-bold text-white leading-tight">
                 Louez l'Éternel, car{' '}
                 <span className="text-cec-gold">Il est bon.</span>
-              </p>
-              <p className="text-white/70 mt-4 text-sm leading-relaxed">
-                Gérez les albums, les événements, les actualités et la galerie de la chorale.
               </p>
             </div>
           </div>
         </div>
 
         {/* ── Panneau formulaire (droite) ──────────────────────────────── */}
-        <div className="flex-1 flex items-center justify-center px-6 sm:px-8 py-10">
+        <div className="flex-1 flex items-center justify-center px-6 sm:px-8 py-6">
           <div className="w-full max-w-sm">
             {/* Logo (visible sur mobile, panneau photo caché) */}
-            <div className="flex items-center justify-center gap-3 mb-8 lg:hidden">
+            <div className="flex items-center justify-center gap-3 mb-6 lg:hidden">
               <div className="w-12 h-12 rounded-full overflow-hidden bg-cec-blue/10">
                 <img
                   src="/logo.png"
@@ -119,12 +116,12 @@ export default function AdminLogin() {
               </div>
             </div>
 
-            <div className="text-center mb-8">
-              <h1 className="font-display text-2xl font-bold text-cec-blue">Administration</h1>
+            <div className="text-center mb-6">
+              <h1 className="font-display text-2xl font-bold text-cec-blue">Se connecter</h1>
               <p className="text-gray-400 text-sm mt-1">Connectez-vous pour continuer</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
                   Email
@@ -183,7 +180,7 @@ export default function AdminLogin() {
               </button>
             </form>
 
-            <p className="text-center text-xs text-gray-400 mt-5">
+            <p className="text-center text-xs text-gray-400 mt-4">
               Pas encore de compte ?{' '}
               <a
                 href="mailto:admin@chorale-ecc.org?subject=Demande%20d%27accès%20administration"
@@ -193,7 +190,7 @@ export default function AdminLogin() {
               </a>
             </p>
 
-            <p className="text-center text-gray-300 text-xs mt-6">
+            <p className="text-center text-gray-300 text-xs mt-5">
               © {new Date().getFullYear()} Chorale Hefzibah
             </p>
           </div>
