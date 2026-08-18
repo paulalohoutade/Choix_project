@@ -22,8 +22,8 @@ const SCROLLING_PHRASES = [
 function RollingTitle({ segments }: { segments: { text: string; className?: string }[] }) {
   let index = 0
   return (
-    <h1 className="font-display text-xl sm:text-2xl lg:text-6xl font-bold text-white
-           leading-tight mb-4 drop-shadow-lg italic whitespace-nowrap" style={{ wordSpacing: '0.15em' }}>
+    <h1 className="font-display text-lg sm:text-2xl lg:text-6xl font-bold text-white
+           leading-tight mb-4 drop-shadow-lg italic whitespace-nowrap" style={{ wordSpacing: '-0.05em' }}>
       {segments.map((seg, s) => (
         <span key={s} className={seg.className}>
           {Array.from(seg.text).map((ch, ci) => {
@@ -106,7 +106,8 @@ export function HeroSection() {
         <p className="text-white text-xs sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-8 leading-[2.5]">
           Église du Christianisme<br />
           Céleste<br />
-          Paroisse BEULAH Kouti Kpinlè Centre
+          Paroisse BEULAH Kouti Kpinlè<br />
+          Centre
         </p>
 
         {/* Titre */}
