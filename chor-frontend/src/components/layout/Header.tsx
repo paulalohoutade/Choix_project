@@ -58,7 +58,7 @@ export default function Header() {
                 Chorale Hefzibah
               </span>
               {/* text-yellow-400 pour un jaune pur et taille text-[10px] */}
-              <span className="text-yellow-400 text-[10px] tracking-widest uppercase hidden sm:block">
+              <span className="text-yellow-400 text-[10px] tracking-widest uppercase">
                 Kouti Kpinlè Centre
               </span>
             </div>

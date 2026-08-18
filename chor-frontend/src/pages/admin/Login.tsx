@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { authApi } from '@/lib/api'
 import toast from 'react-hot-toast'
-import { Music, Lock, ChevronRight } from 'lucide-react'
+import { Music, Lock, ChevronRight, Eye, EyeOff } from 'lucide-react'
 import ForgotPasswordModal from './ForgotPasswordModal'
 
 export default function AdminLogin() {
@@ -11,6 +11,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [showForgot, setShowForgot] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const [photoFailed, setPhotoFailed] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,8 +39,8 @@ export default function AdminLogin() {
 
       {/* Carte centrée */}
       <div className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 lg:flex">
-        {/* ── Panneau photo (gauche, desktop) ──────────────────────────── */}
-        <div className="relative hidden lg:block lg:w-1/2 xl:w-[55%] lg:border-r lg:border-gray-200">
+        {/* ── Panneau photo ──────────────────────────────────────────────── */}
+        <div className="relative w-full h-48 sm:h-56 lg:h-auto lg:w-1/2 xl:w-[55%] lg:border-r lg:border-gray-200 flex-shrink-0">
           {/* Dégradé de fond (visible si la photo n'est pas chargée) */}
           <div className="absolute inset-0 bg-gradient-to-br from-cec-blue via-cec-blue-mid to-cec-dark" />
 
@@ -89,33 +90,9 @@ export default function AdminLogin() {
           </div>
         </div>
 
-        {/* ── Panneau formulaire (droite) ──────────────────────────────── */}
+        {/* ── Panneau formulaire ──────────────────────────────────────── */}
         <div className="flex-1 flex items-center justify-center px-6 sm:px-8 py-6">
           <div className="w-full max-w-sm">
-            {/* Logo (visible sur mobile, panneau photo caché) */}
-            <div className="flex items-center justify-center gap-3 mb-6 lg:hidden">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-cec-blue/10">
-                <img
-                  src="/logo.png"
-                  alt="Logo Chorale Hefzibah"
-                  className="w-full h-full object-contain"
-                  onError={(e) => {
-                    const t = e.currentTarget
-                    t.style.display = 'none'
-                    const fallback = t.nextElementSibling as HTMLElement
-                    if (fallback) fallback.style.display = 'flex'
-                  }}
-                />
-                <div className="w-full h-full bg-cec-gold items-center justify-center hidden">
-                  <Music size={20} className="text-cec-blue" />
-                </div>
-              </div>
-              <div className="leading-tight">
-                <p className="font-display text-cec-blue font-bold text-lg">Chorale Hefzibah</p>
-                <p className="text-cec-gold text-[10px] tracking-widest uppercase">Espace administration</p>
-              </div>
-            </div>
-
             <div className="text-center mb-6">
               <h1 className="font-display text-2xl font-bold text-cec-blue">Se connecter</h1>
               <p className="text-gray-400 text-sm mt-1">Connectez-vous pour continuer</p>
@@ -150,15 +127,24 @@ export default function AdminLogin() {
                     Mot de passe oublié ?
                   </button>
                 </div>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  className="input-field"
-                  autoComplete="current-password"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="input-field pr-10"
+                    autoComplete="current-password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
               </div>
 
               <button

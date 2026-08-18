@@ -105,7 +105,7 @@ export function HeroSection() {
         </div>
 
         {/* Nom de la chorale */}
-        <p className="text-cec-gold text-[11px] font-bold uppercase tracking-[0.3em] mb-3">
+        <p className="text-white text-[11px] font-bold uppercase tracking-[0.3em] mb-3">
           Église du Christianisme Céleste <br /><br /> Paroisse BEULAH Kouti Kpinlè Centre
         </p>
 
