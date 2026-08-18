@@ -55,9 +55,14 @@ export default function EventCard({ event, compact = false }: Props) {
           </div>
 
           <div className="flex-1 min-w-0">
-            <Badge color={typeColors[event.type] ?? 'blue'}>
-              {event.type}
-            </Badge>
+            <div className="flex items-center gap-2">
+              <Badge color={typeColors[event.type] ?? 'blue'}>
+                {event.type}
+              </Badge>
+              {event.status === 'past' && (
+                <Badge color="gray">Passé</Badge>
+              )}
+            </div>
             <h3 className="font-display font-bold text-cec-blue text-base mt-1.5 line-clamp-2 group-hover:text-cec-blue-light">
               {event.title}
             </h3>

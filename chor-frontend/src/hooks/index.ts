@@ -43,6 +43,10 @@ export function useUpcomingEvents() {
   return useQuery({ queryKey: ['events', 'upcoming'], queryFn: () => eventsApi.upcoming().then(r => r.data) })
 }
 
+export function useRecentPastEvents() {
+  return useQuery({ queryKey: ['events', 'past'], queryFn: () => eventsApi.past().then(r => r.data) })
+}
+
 export function useEvent(slug: string) {
   return useQuery({
     queryKey: ['event', slug],

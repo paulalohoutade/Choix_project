@@ -52,6 +52,7 @@ export const tracksApi = {
 export const eventsApi = {
   list: (params?: Record<string, unknown>) => api.get('/events', { params }),
   upcoming: () => api.get('/events/upcoming'),
+  past: () => api.get('/events/past'),
   show: (slug: string) => api.get(`/events/${slug}`),
 }
 

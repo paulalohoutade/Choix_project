@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Play, ChevronRight, Music, CalendarDays, Newspaper } from 'lucide-react'
-import { useFeaturedAlbum, useUpcomingEvents, usePosts } from '@/hooks'
+import { useFeaturedAlbum, useUpcomingEvents, useRecentPastEvents, usePosts } from '@/hooks'
 import { usePlayerStore } from '@/store/playerStore'
 import AlbumCard from '@/components/albums/AlbumCard'
 import EventCard from '@/components/events/EventCard'
@@ -261,6 +261,35 @@ export function UpcomingEvents() {
           <h2 className="section-title">Prochains Événements</h2>
         </div>
         <Link to="/evenements" className="text-cec-blue text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all">
+          Voir tout <ChevronRight size={16} />
+        </Link>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {list.map((ev: Event) => <EventCard key={ev.id} event={ev} />)}
+      </div>
+    </section>
+  )
+}
+
+// ── PastEvents ────────────────────────────────────────────────────────────
+export function PastEvents() {
+  const { data: events, isLoading } = useRecentPastEvents()
+  const list = Array.isArray(events) ? events.slice(0, 3) : (events?.data ?? []).slice(0, 3)
+
+  if (isLoading) return null
+  if (!list.length) return null
+
+  return (
+    <section className="py-16 px-4 max-w-7xl mx-auto">
+      <div className="flex items-end justify-between mb-8">
+        <div>
+          <div className="flex items-center gap-2 text-stone-400 mb-2">
+            <CalendarDays size={18} />
+            <span className="text-sm font-semibold uppercase tracking-widest">Archives</span>
+          </div>
+          <h2 className="section-title">Événements Passés</h2>
+        </div>
+        <Link to="/evenements?status=past" className="text-cec-blue text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all">
           Voir tout <ChevronRight size={16} />
         </Link>
       </div>
