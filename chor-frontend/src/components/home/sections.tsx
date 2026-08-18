@@ -22,8 +22,8 @@ const SCROLLING_PHRASES = [
 function RollingTitle({ segments }: { segments: { text: string; className?: string }[] }) {
   let index = 0
   return (
-    <h1 className="font-display text-5xl sm:text-6xl lg:text-6xl font-bold text-white
-           leading-tight mb-4 drop-shadow-lg italic">
+    <h1 className="font-display text-sm sm:text-2xl lg:text-6xl font-bold text-white
+           leading-tight mb-4 drop-shadow-lg italic whitespace-nowrap">
       {segments.map((seg, s) => (
         <span key={s} className={seg.className}>
           {Array.from(seg.text).map((ch, ci) => {
@@ -79,36 +79,36 @@ export function HeroSection() {
       />
 
       {/* ── Contenu centré ───────────────────────────────────────────────── */}
-      <div className="relative z-10 w-full flex flex-col items-center justify-center px-4 py-24 text-center">
+      <div className="relative z-10 w-full flex flex-col items-center justify-center px-6 py-20 sm:py-24 text-center">
 
-        {/* Logo — mb-3 appliqué ici pour rapprocher le texte */}
-        <div className="mb-3">
+        {/* Logo */}
+        <div className="mb-4">
           <img
             src="/logo.png"
             alt="Logo Chorale Hefzibah"
-            className="w-44 h-44 object-contain mx-auto drop-shadow-2xl"
+            className="w-28 h-28 sm:w-40 sm:h-40 lg:w-44 lg:h-44 object-contain mx-auto drop-shadow-2xl"
             onError={(e) => {
-              // Si logo.png n'existe pas encore, affiche un placeholder
               const t = e.currentTarget
               t.style.display = 'none'
               const placeholder = t.nextElementSibling as HTMLElement
               if (placeholder) placeholder.style.display = 'flex'
             }}
           />
-          {/* Placeholder également ajusté */}
           <div
-            className="w-44 h-44 rounded-full bg-white/10 border-2 border-cec-gold/60
+            className="w-28 h-28 sm:w-40 sm:h-40 lg:w-44 lg:h-44 rounded-full bg-white/10 border-2 border-cec-gold/60
                        items-center justify-center mx-auto hidden"
           >
-            <Music size={72} className="text-cec-gold" />
+            <Music size={56} className="text-cec-gold" />
           </div>
         </div>
 
-        {/* Nom de la chorale */}
-        <p className="text-white text-[11px] font-bold uppercase tracking-[0.3em] mb-3">
-          Église du Christianisme Céleste <br /><br /> Paroisse BEULAH Kouti Kpinlè Centre
+        {/* Paroisse */}
+        <p className="text-white text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-4 leading-[2.5]">
+          Église du Christianisme Céleste<br />
+          Paroisse BEULAH Kouti Kpinlè Centre
         </p>
 
+        {/* Titre */}
         <RollingTitle
           segments={[
             { text: 'Chorale ' },
@@ -116,14 +116,14 @@ export function HeroSection() {
           ]}
         />
 
-        {/* ── Texte défilant ───────────────────────────────────────────── */}
-        <div className="overflow-hidden h-8 sm:h-10 mb-10 w-full max-w-2xl">
+        {/* Texte défilant */}
+        <div className="overflow-hidden h-7 sm:h-9 lg:h-10 mb-8 sm:mb-10 w-full max-w-xl">
           <div className="animate-scroll-phrases">
             {[...SCROLLING_PHRASES, ...SCROLLING_PHRASES].map((phrase, i) => (
               <p
                 key={i}
-                className="h-8 sm:h-10 flex items-center justify-center
-                           text-white/80 text-base sm:text-lg font-body italic"
+                className="h-7 sm:h-9 lg:h-10 flex items-center justify-center
+                           text-white/80 text-sm sm:text-base lg:text-lg font-body italic"
               >
                 {phrase}
               </p>
@@ -132,20 +132,20 @@ export function HeroSection() {
         </div>
 
         {/* Boutons CTA */}
-        <div className="flex flex-wrap items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
           <Link
             to="/albums"
-            className="bg-cec-gold text-cec-blue font-bold px-8 py-4 rounded-full
-                       hover:bg-cec-gold-light transition-colors flex items-center gap-2
-                       text-base shadow-gold"
+            className="w-full sm:w-auto bg-cec-gold text-cec-blue font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-full
+                       hover:bg-cec-gold-light transition-colors flex items-center justify-center gap-2
+                       text-sm sm:text-base shadow-gold"
           >
             <Play size={18} fill="currentColor" />
             Écouter nos albums
           </Link>
           <Link
             to="/evenements"
-            className="border-2 border-white/50 text-white font-semibold px-8 py-4 rounded-full
-                       hover:border-cec-gold hover:text-cec-gold transition-all text-base"
+            className="w-full sm:w-auto border-2 border-white/50 text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-full
+                       hover:border-cec-gold hover:text-cec-gold transition-all text-sm sm:text-base"
           >
             Voir les événements
           </Link>

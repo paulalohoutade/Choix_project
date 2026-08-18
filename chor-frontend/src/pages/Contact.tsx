@@ -43,7 +43,7 @@ export default function Contact() {
           <div className="space-y-4">
             {[
               { icon: Mail, label: 'Email', value: 'contact@chorale-ecc.org' },
-              { icon: Phone, label: 'Téléphone', value: '+229 00 00 00 00' },
+              { icon: Phone, label: 'Téléphone', value: '+229 01 95 80 74 02' },
               { icon: MapPin, label: 'Adresse', value: 'ECC Béulah, Kouti Kpinlè — Avrankou, Bénin' },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-start gap-3">
