@@ -23,7 +23,7 @@ function RollingTitle({ segments }: { segments: { text: string; className?: stri
   let index = 0
   return (
     <h1 className="font-display text-xl sm:text-2xl lg:text-6xl font-bold text-white
-           leading-tight mb-4 drop-shadow-lg italic whitespace-nowrap">
+           leading-tight mb-4 drop-shadow-lg italic whitespace-nowrap" style={{ wordSpacing: '0.15em' }}>
       {segments.map((seg, s) => (
         <span key={s} className={seg.className}>
           {Array.from(seg.text).map((ch, ci) => {
@@ -48,7 +48,7 @@ function RollingTitle({ segments }: { segments: { text: string; className?: stri
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center">
+    <section className="relative overflow-hidden min-h-screen flex flex-col items-center justify-start pt-16 sm:pt-20">
 
       {/* ── Vidéo de fond ────────────────────────────────────────────────── */}
       {/*
@@ -79,7 +79,7 @@ export function HeroSection() {
       />
 
       {/* ── Contenu centré ───────────────────────────────────────────────── */}
-      <div className="relative z-10 w-full flex flex-col items-center justify-center px-6 py-20 sm:py-24 text-center">
+      <div className="relative z-10 w-full flex flex-col items-center justify-center px-6 py-10 sm:py-16 text-center">
 
         {/* Logo */}
         <div className="mb-4">
@@ -104,7 +104,8 @@ export function HeroSection() {
 
         {/* Paroisse */}
         <p className="text-white text-xs sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-8 leading-[2.5]">
-          Église du Christianisme Céleste<br />
+          Église du Christianisme<br />
+          Céleste<br />
           Paroisse BEULAH Kouti Kpinlè Centre
         </p>
 
