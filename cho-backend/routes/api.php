@@ -50,6 +50,7 @@ Route::prefix('v1')->group(function () {
     // Événements
     Route::get('events',               [EventController::class, 'index']);
     Route::get('events/upcoming',      [EventController::class, 'upcoming']);
+    Route::get('events/past',          [EventController::class, 'recentPast']);
     Route::get('events/{slug}',        [EventController::class, 'show']);
 
     // Blog / Actualités

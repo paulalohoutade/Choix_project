@@ -31,6 +31,13 @@ class EventController extends Controller
         return response()->json($events);
     }
 
+    public function recentPast(): JsonResponse
+    {
+        $events = Event::past()->orderByDesc('event_date')->take(3)->get();
+
+        return response()->json($events);
+    }
+
     public function show(string $slug): JsonResponse
     {
         $event = Event::where('slug', $slug)->firstOrFail();
