@@ -41,7 +41,7 @@ class MemberSeeder extends Seeder
         ];
 
         foreach ($members as $memberData) {
-            Member::create($memberData);
+            Member::firstOrCreate(['name' => $memberData['name']], $memberData);
         }
 
         $this->command->info('✔ Membres de test créés.');

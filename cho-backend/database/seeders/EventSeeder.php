@@ -40,7 +40,7 @@ class EventSeeder extends Seeder
         ];
 
         foreach ($events as $eventData) {
-            Event::create($eventData);
+            Event::firstOrCreate(['slug' => $eventData['slug']], $eventData);
         }
 
         $this->command->info('✔ Événements de test créés.');
