@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         // CORS
-        $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
+        $middleware->prepend(\Illuminate\Http\Middleware\HandleCors::class);
 
         // API pure — 401 JSON au lieu de rediriger vers route('login')
         $middleware->redirectGuestsTo(fn () => null);
