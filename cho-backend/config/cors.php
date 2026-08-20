@@ -11,9 +11,13 @@ return [
 
     'allowed_origins' => [
         'https://chorale-hefzibah.vercel.app',
+        'http://localhost:5173',
+        'http://localhost:3000',
     ],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [
+        '.*',
+    ],
 
     'allowed_headers' => ['*'],
 
