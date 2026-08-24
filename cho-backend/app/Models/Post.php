@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -57,8 +58,6 @@ class Post extends Model
     // ── Accesseurs ─────────────────────────────────────────────────────────
     public function getCoverUrlAttribute(): ?string
     {
-        return $this->cover_image
-            ? asset('storage/' . $this->cover_image)
-            : null;
+        return Media::url($this->cover_image);
     }
 }

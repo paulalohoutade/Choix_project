@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -61,9 +62,7 @@ class Track extends Model
     // ── Accesseurs ─────────────────────────────────────────────────────────
     public function getAudioUrlAttribute(): ?string
     {
-        return $this->audio_path
-            ? route('tracks.audio', ['track' => $this->id])
-            : null;
+        return Media::url($this->audio_path);
     }
 
     public function getFormattedDurationAttribute(): string

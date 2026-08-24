@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,8 +31,6 @@ class GalleryItem extends Model
 
     public function getFileUrlAttribute(): ?string
     {
-        return $this->file_path
-            ? asset('storage/' . $this->file_path)
-            : null;
+        return Media::url($this->file_path);
     }
 }
