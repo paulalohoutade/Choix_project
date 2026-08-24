@@ -5,6 +5,19 @@
 
     RewriteEngine On
 
+    # ── CORS (secours Apache, indépendant de Laravel) ─────────────
+    <IfModule mod_headers.c>
+        SetEnvIf Origin "^https://chorale-hefzibah\.vercel\.app$" CORS_ORIGIN=$0
+        SetEnvIf Origin "^http://localhost:(5173|3000)$" CORS_ORIGIN=$0
+        Header always set Access-Control-Allow-Origin "%{CORS_ORIGIN}e" env=CORS_ORIGIN
+        Header always set Access-Control-Allow-Headers "Content-Type,Authorization,Accept,X-Requested-With"
+        Header always set Access-Control-Allow-Methods "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+
+        # Répondre aux requêtes préflight OPTIONS directement
+        RewriteCond %{REQUEST_METHOD} =OPTIONS
+        RewriteRule ^(.*)$ - [R=204,L]
+    </IfModule>
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
         gd \
         exif \
         pcntl \
-    && a2enmod rewrite \
+    && a2enmod rewrite headers \
     && rm -rf /var/lib/apt/lists/*
 
 # Installer Composer
