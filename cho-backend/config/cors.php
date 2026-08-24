@@ -9,7 +9,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://chorale-hefzibah.vercel.app'],
+    'allowed_origins' => array_filter([
+        env('FRONTEND_URL', 'http://localhost:5173'),
+        'https://chorale-hefzibah.vercel.app',
+    ]),
 
     'allowed_origins_patterns' => [],
 
