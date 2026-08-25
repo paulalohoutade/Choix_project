@@ -43,6 +43,6 @@ class Media
             'Key'    => $path,
         ]);
 
-        return (string) $client->createPresignedRequest($cmd, '+5 minutes')->getUri();
+        return (string) $client->createPresignedRequest($cmd, '+7 days')->getUri();
     }
 }
