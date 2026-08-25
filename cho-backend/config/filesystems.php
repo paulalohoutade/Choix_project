@@ -44,7 +44,6 @@ return [
             // ── Options disque local ──────────────────────────────────────
             'root' => env('MEDIA_DISK_DRIVER') === 's3' ? '' : storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
-            'visibility' => 'private',
             // ── Options S3 / Backblaze B2 (ignorées si driver local) ─────
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
