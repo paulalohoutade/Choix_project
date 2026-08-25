@@ -62,13 +62,7 @@ class Track extends Model
     // ── Accesseurs ─────────────────────────────────────────────────────────
     public function getAudioUrlAttribute(): ?string
     {
-        if (! $this->audio_path) {
-            return null;
-        }
-
-        $url = route('tracks.audio', $this->id);
-
-        return str_replace('http://', 'https://', $url);
+        return Media::url($this->audio_path);
     }
 
     public function getFormattedDurationAttribute(): string

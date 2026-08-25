@@ -37,6 +37,9 @@ COPY . .
 # Installer les dépendances PHP
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
+# Augmenter les limites PHP pour les uploads audio
+RUN cp /var/www/html/php.ini /usr/local/etc/php/conf.d/laravel-uploads.ini
+
 # Apache doit servir le dossier public de Laravel
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf
 
