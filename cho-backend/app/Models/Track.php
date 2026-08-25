@@ -66,7 +66,9 @@ class Track extends Model
             return null;
         }
 
-        return route('tracks.audio', $this->id);
+        $url = route('tracks.audio', $this->id);
+
+        return str_replace('http://', 'https://', $url);
     }
 
     public function getFormattedDurationAttribute(): string
