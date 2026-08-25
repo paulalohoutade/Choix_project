@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
 
 class MediaController extends Controller
 {
@@ -13,7 +13,7 @@ class MediaController extends Controller
      * Sert un fichier média depuis le stockage privé (S3/B2).
      * Supporte les requêtes Range pour la lecture audio/vidéo.
      */
-    public function show(Request $request, string $path): Response
+    public function show(Request $request, string $path): Response|void
     {
         $disk = Storage::disk('public');
 
@@ -58,27 +58,27 @@ class MediaController extends Controller
             'Cache-Control'  => 'public, max-age=31536000, immutable',
         ]);
 
-        // Envoyer les headers via header() natif AVANT le stream
-        // pour que Apache ne les écrase pas
+        // Utiliser header() natif PHP pour garantir les headers corrects
+        // (Laravel response()->stream les écrase via Apache/mod_php)
+        http_response_code($status);
+        header_remove();
         foreach ($headers as $k => $v) {
             header("$k: $v");
         }
 
-        return response()->stream(function () use ($disk, $path, $start, $length) {
-            $stream = $disk->readStream($path);
-            fseek($stream, $start);
-            $remaining = $length;
-            while ($remaining > 0 && ! feof($stream)) {
-                $chunk  = min(1024 * 512, $remaining);
-                $buffer = fread($stream, $chunk);
-                if ($buffer === false || $buffer === '') {
-                    break;
-                }
-                echo $buffer;
-                $remaining -= strlen($buffer);
-                flush();
+        $stream = $disk->readStream($path);
+        fseek($stream, $start);
+        $remaining = $length;
+        while ($remaining > 0 && ! feof($stream)) {
+            $chunk  = min(1024 * 512, $remaining);
+            $buffer = fread($stream, $chunk);
+            if ($buffer === false || $buffer === '') {
+                break;
             }
-            fclose($stream);
-        }, $status);
+            echo $buffer;
+            $remaining -= strlen($buffer);
+            flush();
+        }
+        fclose($stream);
     }
 }
