@@ -2,8 +2,6 @@
 
 namespace App\Support;
 
-use Illuminate\Support\Facades\Storage;
-
 /**
  * Génère l'URL publique d'un fichier média selon le disque configuré :
  * - driver local  → {APP_URL}/storage/{path}
@@ -17,8 +15,12 @@ class Media
             return null;
         }
 
-        return config('filesystems.disks.public.driver') === 's3'
-            ? Storage::disk('public')->url($path)
-            : asset('storage/' . $path);
+        // Bucket privé → sert via le proxy Laravel (/api/v1/media/{path})
+        if (config('filesystems.disks.public.driver') === 's3') {
+            return route('media.show', ['path' => $path]);
+        }
+
+        // Disque local → URL via le symlink storage/
+        return asset('storage/' . $path);
     }
 }

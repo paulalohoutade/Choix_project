@@ -16,6 +16,9 @@ use App\Http\Controllers\Api\SettingController;
 // ── Auth ──────────────────────────────────────────────────────────────────
 use App\Http\Controllers\Api\Auth\AuthController;
 
+// ── Proxy médias (fichiers depuis le stockage privé) ─────────────────────
+use App\Http\Controllers\Api\MediaController;
+
 // ── Controllers admin ─────────────────────────────────────────────────────
 use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\AdminAlbumController;
@@ -69,6 +72,11 @@ Route::prefix('v1')->group(function () {
 
     // Paramètres publics
     Route::get('settings/public',      [SettingController::class, 'public']);
+
+    // Proxy médias — sert les fichiers du stockage privé (B2)
+    Route::get('media/{path}', [MediaController::class, 'show'])
+        ->name('media.show')
+        ->where('path', '.*');
 
     // Authentification + reset mot de passe
     Route::post('auth/login',           [AuthController::class, 'login']);
