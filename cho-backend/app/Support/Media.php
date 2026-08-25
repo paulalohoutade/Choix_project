@@ -16,6 +16,7 @@ class Media
         }
 
         // Bucket privé → sert via le proxy Laravel (/api/v1/media/{path})
+        // Le proxy génère une URL pré-signée B2 et redirige (contourne Cloudflare)
         if (config('filesystems.disks.public.driver') === 's3') {
             return route('media.show', ['path' => $path]);
         }

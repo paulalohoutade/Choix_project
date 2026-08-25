@@ -5,15 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
+use Aws\S3\S3Client;
 
 class MediaController extends Controller
 {
     /**
-     * Sert un fichier média depuis le stockage privé (S3/B2).
-     * Supporte les requêtes Range pour la lecture audio/vidéo.
+     * Redirige vers une URL pré-signée S3 pour le fichier demandé.
+     * Contourne Cloudflare (qui écrase Content-Type) en servant
+     * directement depuis l'endpoint S3 de Backblaze.
      */
-    public function show(Request $request, string $path): Response
+    public function show(Request $request, string $path)
     {
         $disk = Storage::disk('public');
 
@@ -21,56 +22,25 @@ class MediaController extends Controller
             abort(404);
         }
 
-        $size = $disk->size($path);
-        $mime = $disk->mimeType($path) ?: 'application/octet-stream';
+        $client = new S3Client([
+            'version'                 => 'latest',
+            'region'                  => config('filesystems.disks.public.region'),
+            'endpoint'                => config('filesystems.disks.public.endpoint'),
+            'credentials' => [
+                'key'    => config('filesystems.disks.public.key'),
+                'secret' => config('filesystems.disks.public.secret'),
+            ],
+            'use_path_style_endpoint' => true,
+            'http'                    => ['verify' => false],
+        ]);
 
-        $start  = 0;
-        $end    = $size - 1;
-        $status = 200;
+        $cmd = $client->getCommand('getObject', [
+            'Bucket' => config('filesystems.disks.public.bucket'),
+            'Key'    => $path,
+        ]);
 
-        $range = $request->header('Range');
-        if ($range && preg_match('/^bytes=(\d*)-(\d*)$/i', trim($range), $m)) {
-            if ($m[1] === '' && $m[2] !== '') {
-                $start  = max(0, $size - (int) $m[2]);
-                $end    = $size - 1;
-                $status = 206;
-            } elseif ($m[1] !== '') {
-                $start  = (int) $m[1];
-                $end    = $m[2] !== '' ? (int) $m[2] : $size - 1;
-                $status = 206;
-            }
-            if ($start >= $size) {
-                return response('', 416, ['Content-Range' => "bytes */{$size}"]);
-            }
-            $end = min($end, $size - 1);
-        }
+        $signedUrl = (string) $client->createPresignedRequest($cmd, '+5 minutes')->getUri();
 
-        $length = $end - $start + 1;
-        if ($length <= 0) {
-            return response('', 416, ['Content-Range' => "bytes */{$size}"]);
-        }
-
-        return response()->stream(function () use ($disk, $path, $start, $length) {
-            $stream = $disk->readStream($path);
-            fseek($stream, $start);
-            $remaining = $length;
-            while ($remaining > 0 && ! feof($stream)) {
-                $chunk  = min(1024 * 512, $remaining);
-                $buffer = fread($stream, $chunk);
-                if ($buffer === false || $buffer === '') {
-                    break;
-                }
-                echo $buffer;
-                $remaining -= strlen($buffer);
-                flush();
-            }
-            fclose($stream);
-        }, $status, array_filter([
-            'Content-Type'   => $mime,
-            'Content-Length' => $length,
-            'Accept-Ranges'  => 'bytes',
-            'Content-Range'  => $status === 206 ? "bytes {$start}-{$end}/{$size}" : null,
-            'Cache-Control'  => 'public, max-age=31536000, immutable',
-        ]));
+        return redirect($signedUrl, 302);
     }
 }
