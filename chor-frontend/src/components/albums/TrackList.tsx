@@ -31,7 +31,7 @@ export default function TrackList({ tracks }: Props) {
           <div
             key={track.id}
             className={clsx(
-              'flex items-center gap-3 px-4 py-3 transition-colors group cursor-pointer',
+              'flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 transition-colors group cursor-pointer',
               isCurrent ? 'bg-cec-blue/5' : 'hover:bg-stone-50'
             )}
             onClick={() => hasAudio && handleTrack(i)}
@@ -49,15 +49,17 @@ export default function TrackList({ tracks }: Props) {
                     <Play size={16} fill="currentColor" />
                   )}
                 </button>
-              ) : (
+              ) : hasAudio ? (
                 <>
-                  <span className="text-gray-400 text-sm group-hover:hidden">
+                  <span className="text-gray-400 text-sm hidden sm:inline group-hover:hidden">
                     {track.track_number}
                   </span>
-                  {hasAudio && (
-                    <Play size={14} className="text-cec-blue hidden group-hover:block mx-auto" />
-                  )}
+                  <Play size={14} className="text-cec-blue mx-auto sm:hidden group-hover:block" />
                 </>
+              ) : (
+                <span className="text-gray-400 text-sm">
+                  {track.track_number}
+                </span>
               )}
             </div>
 
@@ -72,7 +74,7 @@ export default function TrackList({ tracks }: Props) {
             </div>
 
             {/* Duration + actions */}
-            <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               {track.youtube_url && (
                 <a
                   href={track.youtube_url}
@@ -85,7 +87,7 @@ export default function TrackList({ tracks }: Props) {
                   <ExternalLink size={14} />
                 </a>
               )}
-              {track.is_downloadable && track.audio_url && (
+              {track.audio_url && (
                 <a
                   href={track.audio_url}
                   download
