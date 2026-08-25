@@ -50,6 +50,20 @@ class MediaController extends Controller
             return response('', 416, ['Content-Range' => "bytes */{$size}"]);
         }
 
+        $headers = array_filter([
+            'Content-Type'   => $mime,
+            'Content-Length' => $length,
+            'Accept-Ranges'  => 'bytes',
+            'Content-Range'  => $status === 206 ? "bytes {$start}-{$end}/{$size}" : null,
+            'Cache-Control'  => 'public, max-age=31536000, immutable',
+        ]);
+
+        // Envoyer les headers via header() natif AVANT le stream
+        // pour que Apache ne les écrase pas
+        foreach ($headers as $k => $v) {
+            header("$k: $v");
+        }
+
         return response()->stream(function () use ($disk, $path, $start, $length) {
             $stream = $disk->readStream($path);
             fseek($stream, $start);
@@ -65,12 +79,6 @@ class MediaController extends Controller
                 flush();
             }
             fclose($stream);
-        }, $status, array_filter([
-            'Content-Type'   => $mime,
-            'Content-Length' => $length,
-            'Accept-Ranges'  => 'bytes',
-            'Content-Range'  => $status === 206 ? "bytes {$start}-{$end}/{$size}" : null,
-            'Cache-Control'  => 'public, max-age=31536000, immutable',
-        ]));
+        }, $status);
     }
 }
