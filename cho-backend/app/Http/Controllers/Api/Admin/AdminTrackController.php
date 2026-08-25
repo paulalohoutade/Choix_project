@@ -72,6 +72,7 @@ class AdminTrackController extends Controller
             'soundcloud_url'   => 'nullable|url',
             'lyrics'           => 'nullable|string',
             'is_downloadable'  => 'boolean',
+            'audio_path'       => 'nullable|string|max:500',
         ]);
 
         $track->update($validated);

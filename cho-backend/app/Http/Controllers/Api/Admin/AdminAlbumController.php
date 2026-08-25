@@ -54,6 +54,7 @@ class AdminAlbumController extends Controller
             'release_year' => 'sometimes|integer|min:1900|max:2100',
             'is_featured'  => 'boolean',
             'status'       => 'in:draft,published',
+            'cover_image'  => 'nullable|string|max:500',
         ]);
 
         $album->update($validated);
