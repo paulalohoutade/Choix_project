@@ -42,7 +42,7 @@ return [
             // "local" (défaut) ou "s3" — pilote le stockage des médias partout dans l'app
             'driver' => env('MEDIA_DISK_DRIVER', 'local'),
             // ── Options disque local ──────────────────────────────────────
-            'root' => storage_path('app/public'),
+            'root' => env('MEDIA_DISK_DRIVER') === 's3' ? '' : storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
             // ── Options S3 / Backblaze B2 (ignorées si driver local) ─────
@@ -52,6 +52,7 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            '@http' => ['verify' => env('AWS_VERIFY_SSL', true)],
             'throw' => false,
             'report' => false,
         ],
