@@ -58,27 +58,21 @@ class MediaController extends Controller
             'Cache-Control'  => 'public, max-age=31536000, immutable',
         ]);
 
-        // Utiliser header() natif PHP pour garantir les headers corrects
-        // (Laravel response()->stream les écrase via Apache/mod_php)
-        http_response_code($status);
-        header_remove();
-        foreach ($headers as $k => $v) {
-            header("$k: $v");
-        }
-
-        $stream = $disk->readStream($path);
-        fseek($stream, $start);
-        $remaining = $length;
-        while ($remaining > 0 && ! feof($stream)) {
-            $chunk  = min(1024 * 512, $remaining);
-            $buffer = fread($stream, $chunk);
-            if ($buffer === false || $buffer === '') {
-                break;
+        return response()->stream(function () use ($disk, $path, $start, $length) {
+            $stream = $disk->readStream($path);
+            fseek($stream, $start);
+            $remaining = $length;
+            while ($remaining > 0 && ! feof($stream)) {
+                $chunk  = min(1024 * 512, $remaining);
+                $buffer = fread($stream, $chunk);
+                if ($buffer === false || $buffer === '') {
+                    break;
+                }
+                echo $buffer;
+                $remaining -= strlen($buffer);
+                flush();
             }
-            echo $buffer;
-            $remaining -= strlen($buffer);
-            flush();
-        }
-        fclose($stream);
+            fclose($stream);
+        }, $status, $headers);
     }
 }
