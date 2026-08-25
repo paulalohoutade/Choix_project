@@ -101,7 +101,16 @@ class AdminAlbumController extends Controller
             Storage::disk('public')->delete($album->cover_image);
         }
 
-        $path = $request->file('cover')->store('albums/covers', 'public');
+        try {
+            $path = $request->file('cover')->store('albums/covers', 'public');
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Upload failed: ' . $e->getMessage()], 500);
+        }
+
+        if (!$path) {
+            return response()->json(['error' => 'File storage returned empty path.'], 500);
+        }
+
         $album->update(['cover_image' => $path]);
 
         return response()->json(['cover_url' => $album->cover_url]);

@@ -79,7 +79,15 @@ class AdminGalleryController extends Controller
             'event_id' => 'nullable|exists:events,id',
         ]);
 
-        $path = $request->file('file')->store('gallery', 'public');
+        try {
+            $path = $request->file('file')->store('gallery', 'public');
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Upload failed: ' . $e->getMessage()], 500);
+        }
+
+        if (!$path) {
+            return response()->json(['error' => 'File storage returned empty path.'], 500);
+        }
 
         $mime = $request->file('file')->getMimeType();
         $type = $request->type ?? (str_starts_with($mime, 'video/') ? 'video' : 'photo');

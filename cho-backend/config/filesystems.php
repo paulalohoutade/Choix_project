@@ -52,8 +52,8 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            '@http' => ['verify' => env('AWS_VERIFY_SSL', true)],
-            'throw' => false,
+            'http' => ['verify' => env('AWS_VERIFY_SSL', true)],
+            'throw' => true,
             'report' => false,
         ],
 

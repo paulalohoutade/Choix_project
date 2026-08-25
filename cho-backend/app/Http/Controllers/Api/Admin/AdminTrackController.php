@@ -119,7 +119,16 @@ class AdminTrackController extends Controller
             Storage::disk('public')->delete($track->audio_path);
         }
 
-        $path = $request->file('audio')->store('tracks/audio', 'public');
+        try {
+            $path = $request->file('audio')->store('tracks/audio', 'public');
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Upload failed: ' . $e->getMessage()], 500);
+        }
+
+        if (!$path) {
+            return response()->json(['error' => 'File storage returned empty path.'], 500);
+        }
+
         $track->update(['audio_path' => $path]);
 
         return response()->json(['audio_url' => $track->audio_url]);
