@@ -89,7 +89,7 @@ function EventForm({ event, onClose, onSaved }: { event: Event | null; onClose: 
     try {
       if (event) await update.mutateAsync({ id: event.id, data: form })
       else await create.mutateAsync(form)
-      qc.invalidateQueries({ queryKey: ['admin-events'] })
+      await qc.refetchQueries({ queryKey: ['admin-events'] })
       toast.success(event ? 'Événement mis à jour.' : 'Événement créé.')
       onSaved()
     } catch { toast.error('Erreur.') }

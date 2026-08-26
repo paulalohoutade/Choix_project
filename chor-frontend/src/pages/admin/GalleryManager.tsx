@@ -30,7 +30,7 @@ export default function GalleryManager() {
     setUploading(true)
     try {
       await upload.mutateAsync({ file, data: { title: uploadForm.title, type: uploadForm.type } })
-      qc.invalidateQueries({ queryKey: ['admin-gallery'] })
+      await qc.refetchQueries({ queryKey: ['admin-gallery'] })
       toast.success('Fichier uploadé !')
       setShowUpload(false)
       setUploadForm({ title: '', type: 'photo' })

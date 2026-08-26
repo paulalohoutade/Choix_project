@@ -282,7 +282,7 @@ function AlbumForm({ album, onClose, onSaved }: { album: Album | null; onClose: 
     try {
       if (album) await update.mutateAsync({ id: album.id, data: form })
       else await create.mutateAsync(form)
-      qc.invalidateQueries({ queryKey: ['admin-albums'] })
+      await qc.refetchQueries({ queryKey: ['admin-albums'] })
       toast.success(album ? 'Album mis à jour.' : 'Album créé.')
       onSaved()
     } catch { toast.error('Erreur.') }

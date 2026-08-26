@@ -98,7 +98,7 @@ function PostForm({ post, onClose, onSaved }: { post: Post | null; onClose: () =
     try {
       if (post) await update.mutateAsync({ id: post.id, data: form })
       else await create.mutateAsync(form)
-      qc.invalidateQueries({ queryKey: ['admin-posts'] })
+      await qc.refetchQueries({ queryKey: ['admin-posts'] })
       toast.success(post ? 'Article mis à jour.' : 'Article créé.')
       onSaved()
     } catch { toast.error('Erreur.') }

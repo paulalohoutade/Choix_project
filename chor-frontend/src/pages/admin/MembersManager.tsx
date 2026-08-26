@@ -106,7 +106,7 @@ function MemberForm({ member, onClose, onSaved }: { member: Member | null; onClo
     try {
       if (member) await update.mutateAsync({ id: member.id, data: form })
       else await create.mutateAsync(form)
-      qc.invalidateQueries({ queryKey: ['admin-members'] })
+      await qc.refetchQueries({ queryKey: ['admin-members'] })
       toast.success(member ? 'Membre mis à jour.' : 'Membre créé.')
       onSaved()
     } catch { toast.error('Erreur.') }
