@@ -8,6 +8,7 @@ import toast from 'react-hot-toast'
 import type { Member } from '@/types'
 
 export default function MembersManager() {
+  const qc = useQueryClient()
   const { data, isLoading } = useAdminMembers()
   const members: Member[] = Array.isArray(data) ? data : []
   const { remove, uploadPhoto } = useAdminMemberMutations()
@@ -16,12 +17,20 @@ export default function MembersManager() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Supprimer ce membre ?')) return
-    try { await remove.mutateAsync(id); toast.success('Membre supprimé.') }
+    try {
+      await remove.mutateAsync(id)
+      qc.invalidateQueries({ queryKey: ['admin-members'] })
+      toast.success('Membre supprimé.')
+    }
     catch { toast.error('Erreur.') }
   }
 
   const handlePhotoUpload = async (id: number, file: File) => {
-    try { await uploadPhoto.mutateAsync({ id, file }); toast.success('Photo mise à jour.') }
+    try {
+      await uploadPhoto.mutateAsync({ id, file })
+      qc.invalidateQueries({ queryKey: ['admin-members'] })
+      toast.success('Photo mise à jour.')
+    }
     catch { toast.error('Erreur upload.') }
   }
 
@@ -105,14 +114,12 @@ function MemberForm({ member, onClose, onSaved }: { member: Member | null; onClo
     e.preventDefault(); setLoading(true)
     try {
       if (member) {
-        const res = await update.mutateAsync({ id: member.id, data: form })
-        qc.setQueryData(['admin-members'], (old: any[]) =>
-          old.map(a => a.id === member.id ? res.data : a)
-        )
+        await update.mutateAsync({ id: member.id, data: form })
+        qc.invalidateQueries({ queryKey: ['admin-members'] })
         toast.success('Membre mis à jour.')
       } else {
-        const res = await create.mutateAsync(form)
-        qc.setQueryData(['admin-members'], (old: any[]) => [res.data, ...(old ?? [])])
+        await create.mutateAsync(form)
+        qc.invalidateQueries({ queryKey: ['admin-members'] })
         toast.success('Membre créé.')
       }
       onSaved()

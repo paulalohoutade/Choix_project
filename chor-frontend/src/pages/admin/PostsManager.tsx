@@ -10,6 +10,7 @@ import toast from 'react-hot-toast'
 import type { Post } from '@/types'
 
 export default function PostsManager() {
+  const qc = useQueryClient()
   const { data, isLoading } = useAdminPosts()
   const posts: Post[] = data?.data ?? (Array.isArray(data) ? data : [])
   const { remove, publish } = useAdminPostMutations()
@@ -18,12 +19,20 @@ export default function PostsManager() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Supprimer cet article ?')) return
-    try { await remove.mutateAsync(id); toast.success('Article supprimé.') }
+    try {
+      await remove.mutateAsync(id)
+      qc.invalidateQueries({ queryKey: ['admin-posts'] })
+      toast.success('Article supprimé.')
+    }
     catch { toast.error('Erreur.') }
   }
 
   const handlePublish = async (id: number) => {
-    try { await publish.mutateAsync(id); toast.success('Article publié !') }
+    try {
+      await publish.mutateAsync(id)
+      qc.invalidateQueries({ queryKey: ['admin-posts'] })
+      toast.success('Article publié !')
+    }
     catch { toast.error('Erreur.') }
   }
 
@@ -97,14 +106,12 @@ function PostForm({ post, onClose, onSaved }: { post: Post | null; onClose: () =
     e.preventDefault(); setLoading(true)
     try {
       if (post) {
-        const res = await update.mutateAsync({ id: post.id, data: form })
-        qc.setQueryData(['admin-posts'], (old: any[]) =>
-          old.map(a => a.id === post.id ? res.data : a)
-        )
+        await update.mutateAsync({ id: post.id, data: form })
+        qc.invalidateQueries({ queryKey: ['admin-posts'] })
         toast.success('Article mis à jour.')
       } else {
-        const res = await create.mutateAsync(form)
-        qc.setQueryData(['admin-posts'], (old: any[]) => [res.data, ...(old ?? [])])
+        await create.mutateAsync(form)
+        qc.invalidateQueries({ queryKey: ['admin-posts'] })
         toast.success('Article créé.')
       }
       onSaved()

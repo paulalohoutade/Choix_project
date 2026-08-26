@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import {
   albumsApi, eventsApi, postsApi, galleryApi, membersApi, settingsApi,
   adminAlbumsApi, adminTracksApi, adminEventsApi, adminPostsApi,
@@ -119,14 +119,11 @@ export function useAdminAlbum(id: number) {
 }
 
 export function useAdminAlbumMutations() {
-  const qc = useQueryClient()
-  const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-albums'] })
-
-  const create = useMutation({ mutationFn: (d: unknown) => adminAlbumsApi.create(d), onSuccess: invalidate })
-  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminAlbumsApi.update(id, data), onSuccess: invalidate })
-  const remove = useMutation({ mutationFn: (id: number) => adminAlbumsApi.delete(id), onSuccess: invalidate })
-  const toggleFeatured = useMutation({ mutationFn: (id: number) => adminAlbumsApi.toggleFeatured(id), onSuccess: invalidate })
-  const uploadCover = useMutation({ mutationFn: ({ id, file }: { id: number; file: File }) => adminAlbumsApi.uploadCover(id, file), onSuccess: invalidate })
+  const create = useMutation({ mutationFn: (d: unknown) => adminAlbumsApi.create(d) })
+  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminAlbumsApi.update(id, data) })
+  const remove = useMutation({ mutationFn: (id: number) => adminAlbumsApi.delete(id) })
+  const toggleFeatured = useMutation({ mutationFn: (id: number) => adminAlbumsApi.toggleFeatured(id) })
+  const uploadCover = useMutation({ mutationFn: ({ id, file }: { id: number; file: File }) => adminAlbumsApi.uploadCover(id, file) })
 
   return { create, update, remove, toggleFeatured, uploadCover }
 }
@@ -136,13 +133,10 @@ export function useAdminTracks(params?: Record<string, unknown>) {
 }
 
 export function useAdminTrackMutations() {
-  const qc = useQueryClient()
-  const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-tracks'] })
-
-  const create = useMutation({ mutationFn: (d: unknown) => adminTracksApi.create(d), onSuccess: invalidate })
-  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminTracksApi.update(id, data), onSuccess: invalidate })
-  const remove = useMutation({ mutationFn: (id: number) => adminTracksApi.delete(id), onSuccess: invalidate })
-  const uploadAudio = useMutation({ mutationFn: ({ id, file }: { id: number; file: File }) => adminTracksApi.uploadAudio(id, file), onSuccess: invalidate })
+  const create = useMutation({ mutationFn: (d: unknown) => adminTracksApi.create(d) })
+  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminTracksApi.update(id, data) })
+  const remove = useMutation({ mutationFn: (id: number) => adminTracksApi.delete(id) })
+  const uploadAudio = useMutation({ mutationFn: ({ id, file }: { id: number; file: File }) => adminTracksApi.uploadAudio(id, file) })
 
   return { create, update, remove, uploadAudio }
 }
@@ -152,12 +146,9 @@ export function useAdminEvents(params?: Record<string, unknown>) {
 }
 
 export function useAdminEventMutations() {
-  const qc = useQueryClient()
-  const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-events'] })
-
-  const create = useMutation({ mutationFn: (d: unknown) => adminEventsApi.create(d), onSuccess: invalidate })
-  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminEventsApi.update(id, data), onSuccess: invalidate })
-  const remove = useMutation({ mutationFn: (id: number) => adminEventsApi.delete(id), onSuccess: invalidate })
+  const create = useMutation({ mutationFn: (d: unknown) => adminEventsApi.create(d) })
+  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminEventsApi.update(id, data) })
+  const remove = useMutation({ mutationFn: (id: number) => adminEventsApi.delete(id) })
 
   return { create, update, remove }
 }
@@ -167,13 +158,10 @@ export function useAdminPosts(params?: Record<string, unknown>) {
 }
 
 export function useAdminPostMutations() {
-  const qc = useQueryClient()
-  const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-posts'] })
-
-  const create = useMutation({ mutationFn: (d: unknown) => adminPostsApi.create(d), onSuccess: invalidate })
-  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminPostsApi.update(id, data), onSuccess: invalidate })
-  const remove = useMutation({ mutationFn: (id: number) => adminPostsApi.delete(id), onSuccess: invalidate })
-  const publish = useMutation({ mutationFn: (id: number) => adminPostsApi.publish(id), onSuccess: invalidate })
+  const create = useMutation({ mutationFn: (d: unknown) => adminPostsApi.create(d) })
+  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminPostsApi.update(id, data) })
+  const remove = useMutation({ mutationFn: (id: number) => adminPostsApi.delete(id) })
+  const publish = useMutation({ mutationFn: (id: number) => adminPostsApi.publish(id) })
 
   return { create, update, remove, publish }
 }
@@ -183,12 +171,9 @@ export function useAdminGallery(params?: Record<string, unknown>) {
 }
 
 export function useAdminGalleryMutations() {
-  const qc = useQueryClient()
-  const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-gallery'] })
-
-  const upload = useMutation({ mutationFn: ({ file, data }: { file: File; data: Record<string, string> }) => adminGalleryApi.upload(file, data), onSuccess: invalidate })
-  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminGalleryApi.update(id, data), onSuccess: invalidate })
-  const remove = useMutation({ mutationFn: (id: number) => adminGalleryApi.delete(id), onSuccess: invalidate })
+  const upload = useMutation({ mutationFn: ({ file, data }: { file: File; data: Record<string, string> }) => adminGalleryApi.upload(file, data) })
+  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminGalleryApi.update(id, data) })
+  const remove = useMutation({ mutationFn: (id: number) => adminGalleryApi.delete(id) })
 
   return { upload, update, remove }
 }
@@ -198,13 +183,10 @@ export function useAdminMembers() {
 }
 
 export function useAdminMemberMutations() {
-  const qc = useQueryClient()
-  const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-members'] })
-
-  const create = useMutation({ mutationFn: (d: unknown) => adminMembersApi.create(d), onSuccess: invalidate })
-  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminMembersApi.update(id, data), onSuccess: invalidate })
-  const remove = useMutation({ mutationFn: (id: number) => adminMembersApi.delete(id), onSuccess: invalidate })
-  const uploadPhoto = useMutation({ mutationFn: ({ id, file }: { id: number; file: File }) => adminMembersApi.uploadPhoto(id, file), onSuccess: invalidate })
+  const create = useMutation({ mutationFn: (d: unknown) => adminMembersApi.create(d) })
+  const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminMembersApi.update(id, data) })
+  const remove = useMutation({ mutationFn: (id: number) => adminMembersApi.delete(id) })
+  const uploadPhoto = useMutation({ mutationFn: ({ id, file }: { id: number; file: File }) => adminMembersApi.uploadPhoto(id, file) })
 
   return { create, update, remove, uploadPhoto }
 }
@@ -214,11 +196,8 @@ export function useAdminContacts(params?: Record<string, unknown>) {
 }
 
 export function useAdminContactMutations() {
-  const qc = useQueryClient()
-  const invalidate = () => qc.invalidateQueries({ queryKey: ['admin-contacts'] })
-
-  const markAsRead = useMutation({ mutationFn: (id: number) => adminContactsApi.markAsRead(id), onSuccess: invalidate })
-  const remove = useMutation({ mutationFn: (id: number) => adminContactsApi.delete(id), onSuccess: invalidate })
+  const markAsRead = useMutation({ mutationFn: (id: number) => adminContactsApi.markAsRead(id) })
+  const remove = useMutation({ mutationFn: (id: number) => adminContactsApi.delete(id) })
 
   return { markAsRead, remove }
 }
@@ -228,9 +207,7 @@ export function useAdminSettings() {
 }
 
 export function useAdminSettingsMutation() {
-  const qc = useQueryClient()
   return useMutation({
     mutationFn: (data: unknown) => adminSettingsApi.update(data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-settings'] }),
   })
 }

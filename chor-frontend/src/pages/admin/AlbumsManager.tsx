@@ -34,18 +34,27 @@ export default function AlbumsManager() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Supprimer cet album ?')) return
-    try { await remove.mutateAsync(id); toast.success('Album supprimé.') }
+    try {
+      await remove.mutateAsync(id)
+      qc.invalidateQueries({ queryKey: ['admin-albums'] })
+      toast.success('Album supprimé.')
+    }
     catch { toast.error('Erreur.') }
   }
 
   const handleToggleFeatured = async (id: number) => {
-    try { await toggleFeatured.mutateAsync(id); toast.success('Mis à jour.') }
+    try {
+      await toggleFeatured.mutateAsync(id)
+      qc.invalidateQueries({ queryKey: ['admin-albums'] })
+      toast.success('Mis à jour.')
+    }
     catch { toast.error('Erreur.') }
   }
 
   const handleCoverUpload = async (id: number, file: File) => {
     try {
       await uploadCover.mutateAsync({ id, file })
+      qc.invalidateQueries({ queryKey: ['admin-albums'] })
       toast.success('Pochette mise à jour.')
     } catch { toast.error('Erreur upload.') }
   }
@@ -281,14 +290,12 @@ function AlbumForm({ album, onClose, onSaved }: { album: Album | null; onClose: 
     setLoading(true)
     try {
       if (album) {
-        const res = await update.mutateAsync({ id: album.id, data: form })
-        qc.setQueryData(['admin-albums'], (old: any[]) =>
-          old.map(a => a.id === album.id ? res.data : a)
-        )
+        await update.mutateAsync({ id: album.id, data: form })
+        qc.invalidateQueries({ queryKey: ['admin-albums'] })
         toast.success('Album mis à jour.')
       } else {
-        const res = await create.mutateAsync(form)
-        qc.setQueryData(['admin-albums'], (old: any[]) => [res.data, ...(old ?? [])])
+        await create.mutateAsync(form)
+        qc.invalidateQueries({ queryKey: ['admin-albums'] })
         toast.success('Album créé.')
       }
       onSaved()

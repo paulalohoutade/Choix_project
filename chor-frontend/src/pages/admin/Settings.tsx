@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAdminSettings, useAdminSettingsMutation } from '@/hooks'
+import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader } from './Dashboard'
 import { Button } from '@/components/ui'
 import toast from 'react-hot-toast'
@@ -16,6 +17,7 @@ const SETTINGS_FIELDS = [
 ]
 
 export default function Settings() {
+  const qc = useQueryClient()
   const { data: settings, isLoading } = useAdminSettings()
   const mutation = useAdminSettingsMutation()
   const [form, setForm] = useState<Record<string, string>>({})
@@ -38,6 +40,7 @@ export default function Settings() {
     setLoading(true)
     try {
       await mutation.mutateAsync(form)
+      qc.invalidateQueries({ queryKey: ['admin-settings'] })
       toast.success('Paramètres enregistrés.')
     } catch {
       toast.error('Erreur lors de la sauvegarde.')

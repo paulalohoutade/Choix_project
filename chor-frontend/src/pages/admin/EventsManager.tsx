@@ -10,6 +10,7 @@ import toast from 'react-hot-toast'
 import type { Event } from '@/types'
 
 export default function EventsManager() {
+  const qc = useQueryClient()
   const { data, isLoading } = useAdminEvents()
   const events: Event[] = data?.data ?? (Array.isArray(data) ? data : [])
   const { remove } = useAdminEventMutations()
@@ -18,7 +19,11 @@ export default function EventsManager() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Supprimer cet événement ?')) return
-    try { await remove.mutateAsync(id); toast.success('Événement supprimé.') }
+    try {
+      await remove.mutateAsync(id)
+      qc.invalidateQueries({ queryKey: ['admin-events'] })
+      toast.success('Événement supprimé.')
+    }
     catch { toast.error('Erreur.') }
   }
 
@@ -88,14 +93,12 @@ function EventForm({ event, onClose, onSaved }: { event: Event | null; onClose: 
     e.preventDefault(); setLoading(true)
     try {
       if (event) {
-        const res = await update.mutateAsync({ id: event.id, data: form })
-        qc.setQueryData(['admin-events'], (old: any[]) =>
-          old.map(a => a.id === event.id ? res.data : a)
-        )
+        await update.mutateAsync({ id: event.id, data: form })
+        qc.invalidateQueries({ queryKey: ['admin-events'] })
         toast.success('Événement mis à jour.')
       } else {
-        const res = await create.mutateAsync(form)
-        qc.setQueryData(['admin-events'], (old: any[]) => [res.data, ...(old ?? [])])
+        await create.mutateAsync(form)
+        qc.invalidateQueries({ queryKey: ['admin-events'] })
         toast.success('Événement créé.')
       }
       onSaved()

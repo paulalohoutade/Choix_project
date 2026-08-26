@@ -19,7 +19,11 @@ export default function GalleryManager() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Supprimer cet élément ?')) return
-    try { await remove.mutateAsync(id); toast.success('Supprimé.') }
+    try {
+      await remove.mutateAsync(id)
+      qc.invalidateQueries({ queryKey: ['admin-gallery'] })
+      toast.success('Supprimé.')
+    }
     catch { toast.error('Erreur.') }
   }
 
@@ -29,8 +33,8 @@ export default function GalleryManager() {
     if (!file) return
     setUploading(true)
     try {
-      const res = await upload.mutateAsync({ file, data: { title: uploadForm.title, type: uploadForm.type } })
-      qc.setQueryData(['admin-gallery'], (old: any[]) => [res.data, ...(old ?? [])])
+      await upload.mutateAsync({ file, data: { title: uploadForm.title, type: uploadForm.type } })
+      qc.invalidateQueries({ queryKey: ['admin-gallery'] })
       toast.success('Fichier uploadé !')
       setShowUpload(false)
       setUploadForm({ title: '', type: 'photo' })

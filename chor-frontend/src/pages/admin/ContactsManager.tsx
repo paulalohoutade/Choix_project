@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Mail, MailOpen, Trash2, X } from 'lucide-react'
 import { useAdminContacts, useAdminContactMutations } from '@/hooks'
+import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader } from './Dashboard'
 import { Badge } from '@/components/ui'
 import { format } from 'date-fns'
@@ -9,19 +10,28 @@ import toast from 'react-hot-toast'
 import type { Contact } from '@/types'
 
 export default function ContactsManager() {
+  const qc = useQueryClient()
   const { data, isLoading } = useAdminContacts()
   const contacts: Contact[] = data?.data ?? (Array.isArray(data) ? data : [])
   const { markAsRead, remove } = useAdminContactMutations()
   const [selected, setSelected] = useState<Contact | null>(null)
 
   const handleMarkRead = async (id: number) => {
-    try { await markAsRead.mutateAsync(id) }
+    try {
+      await markAsRead.mutateAsync(id)
+      qc.invalidateQueries({ queryKey: ['admin-contacts'] })
+    }
     catch { toast.error('Erreur.') }
   }
 
   const handleDelete = async (id: number) => {
     if (!confirm('Supprimer ce message ?')) return
-    try { await remove.mutateAsync(id); toast.success('Message supprimé.'); setSelected(null) }
+    try {
+      await remove.mutateAsync(id)
+      qc.invalidateQueries({ queryKey: ['admin-contacts'] })
+      toast.success('Message supprimé.')
+      setSelected(null)
+    }
     catch { toast.error('Erreur.') }
   }
 
