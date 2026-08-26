@@ -29,8 +29,8 @@ export default function GalleryManager() {
     if (!file) return
     setUploading(true)
     try {
-      await upload.mutateAsync({ file, data: { title: uploadForm.title, type: uploadForm.type } })
-      await qc.refetchQueries({ queryKey: ['admin-gallery'] })
+      const res = await upload.mutateAsync({ file, data: { title: uploadForm.title, type: uploadForm.type } })
+      qc.setQueryData(['admin-gallery'], (old: any[]) => [res.data, ...(old ?? [])])
       toast.success('Fichier uploadé !')
       setShowUpload(false)
       setUploadForm({ title: '', type: 'photo' })

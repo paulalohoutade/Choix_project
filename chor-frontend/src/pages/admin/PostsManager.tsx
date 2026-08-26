@@ -96,10 +96,17 @@ function PostForm({ post, onClose, onSaved }: { post: Post | null; onClose: () =
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setLoading(true)
     try {
-      if (post) await update.mutateAsync({ id: post.id, data: form })
-      else await create.mutateAsync(form)
-      await qc.refetchQueries({ queryKey: ['admin-posts'] })
-      toast.success(post ? 'Article mis à jour.' : 'Article créé.')
+      if (post) {
+        const res = await update.mutateAsync({ id: post.id, data: form })
+        qc.setQueryData(['admin-posts'], (old: any[]) =>
+          old.map(a => a.id === post.id ? res.data : a)
+        )
+        toast.success('Article mis à jour.')
+      } else {
+        const res = await create.mutateAsync(form)
+        qc.setQueryData(['admin-posts'], (old: any[]) => [res.data, ...(old ?? [])])
+        toast.success('Article créé.')
+      }
       onSaved()
     } catch { toast.error('Erreur.') }
     finally { setLoading(false) }

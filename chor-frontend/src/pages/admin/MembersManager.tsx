@@ -104,10 +104,17 @@ function MemberForm({ member, onClose, onSaved }: { member: Member | null; onClo
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setLoading(true)
     try {
-      if (member) await update.mutateAsync({ id: member.id, data: form })
-      else await create.mutateAsync(form)
-      await qc.refetchQueries({ queryKey: ['admin-members'] })
-      toast.success(member ? 'Membre mis à jour.' : 'Membre créé.')
+      if (member) {
+        const res = await update.mutateAsync({ id: member.id, data: form })
+        qc.setQueryData(['admin-members'], (old: any[]) =>
+          old.map(a => a.id === member.id ? res.data : a)
+        )
+        toast.success('Membre mis à jour.')
+      } else {
+        const res = await create.mutateAsync(form)
+        qc.setQueryData(['admin-members'], (old: any[]) => [res.data, ...(old ?? [])])
+        toast.success('Membre créé.')
+      }
       onSaved()
     } catch { toast.error('Erreur.') }
     finally { setLoading(false) }

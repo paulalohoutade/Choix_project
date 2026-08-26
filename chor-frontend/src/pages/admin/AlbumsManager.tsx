@@ -280,10 +280,17 @@ function AlbumForm({ album, onClose, onSaved }: { album: Album | null; onClose: 
     e.preventDefault()
     setLoading(true)
     try {
-      if (album) await update.mutateAsync({ id: album.id, data: form })
-      else await create.mutateAsync(form)
-      await qc.refetchQueries({ queryKey: ['admin-albums'] })
-      toast.success(album ? 'Album mis à jour.' : 'Album créé.')
+      if (album) {
+        const res = await update.mutateAsync({ id: album.id, data: form })
+        qc.setQueryData(['admin-albums'], (old: any[]) =>
+          old.map(a => a.id === album.id ? res.data : a)
+        )
+        toast.success('Album mis à jour.')
+      } else {
+        const res = await create.mutateAsync(form)
+        qc.setQueryData(['admin-albums'], (old: any[]) => [res.data, ...(old ?? [])])
+        toast.success('Album créé.')
+      }
       onSaved()
     } catch { toast.error('Erreur.') }
     finally { setLoading(false) }
