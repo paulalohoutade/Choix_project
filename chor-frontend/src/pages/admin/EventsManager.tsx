@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { useAdminEvents, useAdminEventMutations } from '@/hooks'
+import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader, AdminTable } from './Dashboard'
 import { Button, Badge } from '@/components/ui'
 import { format } from 'date-fns'
@@ -71,6 +72,7 @@ export default function EventsManager() {
 }
 
 function EventForm({ event, onClose, onSaved }: { event: Event | null; onClose: () => void; onSaved: () => void }) {
+  const qc = useQueryClient()
   const { create, update } = useAdminEventMutations()
   const [form, setForm] = useState({
     title: event?.title ?? '',
@@ -87,6 +89,7 @@ function EventForm({ event, onClose, onSaved }: { event: Event | null; onClose: 
     try {
       if (event) await update.mutateAsync({ id: event.id, data: form })
       else await create.mutateAsync(form)
+      qc.invalidateQueries({ queryKey: ['admin-events'] })
       toast.success(event ? 'Événement mis à jour.' : 'Événement créé.')
       onSaved()
     } catch { toast.error('Erreur.') }

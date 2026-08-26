@@ -1,12 +1,14 @@
 import { useState, useRef } from 'react'
 import { Upload, Trash2, X, Play } from 'lucide-react'
 import { useAdminGallery, useAdminGalleryMutations } from '@/hooks'
+import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader, AdminTable } from './Dashboard'
 import { Button } from '@/components/ui'
 import toast from 'react-hot-toast'
 import type { GalleryItem } from '@/types'
 
 export default function GalleryManager() {
+  const qc = useQueryClient()
   const { data, isLoading } = useAdminGallery()
   const items: GalleryItem[] = data?.data ?? (Array.isArray(data) ? data : [])
   const { upload, remove } = useAdminGalleryMutations()
@@ -28,6 +30,7 @@ export default function GalleryManager() {
     setUploading(true)
     try {
       await upload.mutateAsync({ file, data: { title: uploadForm.title, type: uploadForm.type } })
+      qc.invalidateQueries({ queryKey: ['admin-gallery'] })
       toast.success('Fichier uploadé !')
       setShowUpload(false)
       setUploadForm({ title: '', type: 'photo' })

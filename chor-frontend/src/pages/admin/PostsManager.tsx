@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Plus, Pencil, Trash2, Send } from 'lucide-react'
 import { useAdminPosts, useAdminPostMutations } from '@/hooks'
+import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader, AdminTable } from './Dashboard'
 import { Button, Badge } from '@/components/ui'
 import { format } from 'date-fns'
@@ -81,6 +82,7 @@ export default function PostsManager() {
 }
 
 function PostForm({ post, onClose, onSaved }: { post: Post | null; onClose: () => void; onSaved: () => void }) {
+  const qc = useQueryClient()
   const { create, update } = useAdminPostMutations()
   const [form, setForm] = useState({
     title: post?.title ?? '',
@@ -96,6 +98,7 @@ function PostForm({ post, onClose, onSaved }: { post: Post | null; onClose: () =
     try {
       if (post) await update.mutateAsync({ id: post.id, data: form })
       else await create.mutateAsync(form)
+      qc.invalidateQueries({ queryKey: ['admin-posts'] })
       toast.success(post ? 'Article mis à jour.' : 'Article créé.')
       onSaved()
     } catch { toast.error('Erreur.') }

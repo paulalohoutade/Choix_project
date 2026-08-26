@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Plus, Pencil, Trash2, Upload } from 'lucide-react'
 import { useAdminMembers, useAdminMemberMutations } from '@/hooks'
+import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader, AdminTable } from './Dashboard'
 import { Button } from '@/components/ui'
 import toast from 'react-hot-toast'
@@ -89,6 +90,7 @@ export default function MembersManager() {
 }
 
 function MemberForm({ member, onClose, onSaved }: { member: Member | null; onClose: () => void; onSaved: () => void }) {
+  const qc = useQueryClient()
   const { create, update } = useAdminMemberMutations()
   const [form, setForm] = useState({
     name: member?.name ?? '',
@@ -104,6 +106,7 @@ function MemberForm({ member, onClose, onSaved }: { member: Member | null; onClo
     try {
       if (member) await update.mutateAsync({ id: member.id, data: form })
       else await create.mutateAsync(form)
+      qc.invalidateQueries({ queryKey: ['admin-members'] })
       toast.success(member ? 'Membre mis à jour.' : 'Membre créé.')
       onSaved()
     } catch { toast.error('Erreur.') }
