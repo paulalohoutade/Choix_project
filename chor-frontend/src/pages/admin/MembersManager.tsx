@@ -19,7 +19,7 @@ export default function MembersManager() {
     if (!confirm('Supprimer ce membre ?')) return
     try {
       await remove.mutateAsync(id)
-      qc.invalidateQueries({ queryKey: ['admin-members'] })
+      await qc.refetchQueries({ queryKey: ['admin-members'] })
       toast.success('Membre supprimé.')
     }
     catch { toast.error('Erreur.') }
@@ -28,7 +28,7 @@ export default function MembersManager() {
   const handlePhotoUpload = async (id: number, file: File) => {
     try {
       await uploadPhoto.mutateAsync({ id, file })
-      qc.invalidateQueries({ queryKey: ['admin-members'] })
+      await qc.refetchQueries({ queryKey: ['admin-members'] })
       toast.success('Photo mise à jour.')
     }
     catch { toast.error('Erreur upload.') }
@@ -115,11 +115,11 @@ function MemberForm({ member, onClose, onSaved }: { member: Member | null; onClo
     try {
       if (member) {
         await update.mutateAsync({ id: member.id, data: form })
-        qc.invalidateQueries({ queryKey: ['admin-members'] })
+        await qc.refetchQueries({ queryKey: ['admin-members'] })
         toast.success('Membre mis à jour.')
       } else {
         await create.mutateAsync(form)
-        qc.invalidateQueries({ queryKey: ['admin-members'] })
+        await qc.refetchQueries({ queryKey: ['admin-members'] })
         toast.success('Membre créé.')
       }
       onSaved()

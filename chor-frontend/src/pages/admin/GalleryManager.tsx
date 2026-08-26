@@ -10,18 +10,20 @@ import type { GalleryItem } from '@/types'
 export default function GalleryManager() {
   const qc = useQueryClient()
   const { data, isLoading } = useAdminGallery()
-  const items: GalleryItem[] = data?.data ?? (Array.isArray(data) ? data : [])
+  const items: GalleryItem[] = Array.isArray(data) ? data : []
   const { upload, remove } = useAdminGalleryMutations()
   const [showUpload, setShowUpload] = useState(false)
   const [uploading, setUploading] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploadForm, setUploadForm] = useState({ title: '', type: 'photo' as 'photo' | 'video' })
 
+  const refetch = () => qc.refetchQueries({ queryKey: ['admin-gallery'] })
+
   const handleDelete = async (id: number) => {
     if (!confirm('Supprimer cet élément ?')) return
     try {
       await remove.mutateAsync(id)
-      qc.invalidateQueries({ queryKey: ['admin-gallery'] })
+      await refetch()
       toast.success('Supprimé.')
     }
     catch { toast.error('Erreur.') }
@@ -34,7 +36,7 @@ export default function GalleryManager() {
     setUploading(true)
     try {
       await upload.mutateAsync({ file, data: { title: uploadForm.title, type: uploadForm.type } })
-      qc.invalidateQueries({ queryKey: ['admin-gallery'] })
+      await refetch()
       toast.success('Fichier uploadé !')
       setShowUpload(false)
       setUploadForm({ title: '', type: 'photo' })
@@ -91,7 +93,6 @@ export default function GalleryManager() {
         </div>
       )}
 
-      {/* Grid view */}
       {isLoading ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[1,2,3,4,5,6].map(i => <div key={i} className="skeleton aspect-square rounded-lg" />)}

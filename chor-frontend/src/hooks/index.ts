@@ -111,7 +111,7 @@ export function useDashboardStats() {
 }
 
 export function useAdminAlbums(params?: Record<string, unknown>) {
-  return useQuery({ queryKey: ['admin-albums', params], queryFn: () => adminAlbumsApi.list(params).then(r => r.data) })
+  return useQuery({ queryKey: params ? ['admin-albums', params] : ['admin-albums'], queryFn: () => adminAlbumsApi.list(params).then(r => r.data) })
 }
 
 export function useAdminAlbum(id: number) {
@@ -129,7 +129,7 @@ export function useAdminAlbumMutations() {
 }
 
 export function useAdminTracks(params?: Record<string, unknown>) {
-  return useQuery({ queryKey: ['admin-tracks', params], queryFn: () => adminTracksApi.list(params).then(r => r.data) })
+  return useQuery({ queryKey: params ? ['admin-tracks', params] : ['admin-tracks'], queryFn: () => adminTracksApi.list(params).then(r => r.data) })
 }
 
 export function useAdminTrackMutations() {
@@ -142,7 +142,7 @@ export function useAdminTrackMutations() {
 }
 
 export function useAdminEvents(params?: Record<string, unknown>) {
-  return useQuery({ queryKey: ['admin-events', params], queryFn: () => adminEventsApi.list(params).then(r => r.data) })
+  return useQuery({ queryKey: params ? ['admin-events', params] : ['admin-events'], queryFn: () => adminEventsApi.list(params).then(r => r.data) })
 }
 
 export function useAdminEventMutations() {
@@ -154,7 +154,7 @@ export function useAdminEventMutations() {
 }
 
 export function useAdminPosts(params?: Record<string, unknown>) {
-  return useQuery({ queryKey: ['admin-posts', params], queryFn: () => adminPostsApi.list(params).then(r => r.data) })
+  return useQuery({ queryKey: params ? ['admin-posts', params] : ['admin-posts'], queryFn: () => adminPostsApi.list(params).then(r => r.data) })
 }
 
 export function useAdminPostMutations() {
@@ -167,7 +167,7 @@ export function useAdminPostMutations() {
 }
 
 export function useAdminGallery(params?: Record<string, unknown>) {
-  return useQuery({ queryKey: ['admin-gallery', params], queryFn: () => adminGalleryApi.list(params).then(r => r.data) })
+  return useQuery({ queryKey: params ? ['admin-gallery', params] : ['admin-gallery'], queryFn: () => adminGalleryApi.list(params).then(r => r.data) })
 }
 
 export function useAdminGalleryMutations() {
@@ -192,7 +192,7 @@ export function useAdminMemberMutations() {
 }
 
 export function useAdminContacts(params?: Record<string, unknown>) {
-  return useQuery({ queryKey: ['admin-contacts', params], queryFn: () => adminContactsApi.list(params).then(r => r.data) })
+  return useQuery({ queryKey: params ? ['admin-contacts', params] : ['admin-contacts'], queryFn: () => adminContactsApi.list(params).then(r => r.data) })
 }
 
 export function useAdminContactMutations() {

@@ -21,7 +21,7 @@ export default function PostsManager() {
     if (!confirm('Supprimer cet article ?')) return
     try {
       await remove.mutateAsync(id)
-      qc.invalidateQueries({ queryKey: ['admin-posts'] })
+      await qc.refetchQueries({ queryKey: ['admin-posts'] })
       toast.success('Article supprimé.')
     }
     catch { toast.error('Erreur.') }
@@ -30,7 +30,7 @@ export default function PostsManager() {
   const handlePublish = async (id: number) => {
     try {
       await publish.mutateAsync(id)
-      qc.invalidateQueries({ queryKey: ['admin-posts'] })
+      await qc.refetchQueries({ queryKey: ['admin-posts'] })
       toast.success('Article publié !')
     }
     catch { toast.error('Erreur.') }
@@ -107,11 +107,11 @@ function PostForm({ post, onClose, onSaved }: { post: Post | null; onClose: () =
     try {
       if (post) {
         await update.mutateAsync({ id: post.id, data: form })
-        qc.invalidateQueries({ queryKey: ['admin-posts'] })
+        await qc.refetchQueries({ queryKey: ['admin-posts'] })
         toast.success('Article mis à jour.')
       } else {
         await create.mutateAsync(form)
-        qc.invalidateQueries({ queryKey: ['admin-posts'] })
+        await qc.refetchQueries({ queryKey: ['admin-posts'] })
         toast.success('Article créé.')
       }
       onSaved()

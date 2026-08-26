@@ -19,7 +19,7 @@ export default function ContactsManager() {
   const handleMarkRead = async (id: number) => {
     try {
       await markAsRead.mutateAsync(id)
-      qc.invalidateQueries({ queryKey: ['admin-contacts'] })
+      await qc.refetchQueries({ queryKey: ['admin-contacts'] })
     }
     catch { toast.error('Erreur.') }
   }
@@ -28,7 +28,7 @@ export default function ContactsManager() {
     if (!confirm('Supprimer ce message ?')) return
     try {
       await remove.mutateAsync(id)
-      qc.invalidateQueries({ queryKey: ['admin-contacts'] })
+      await qc.refetchQueries({ queryKey: ['admin-contacts'] })
       toast.success('Message supprimé.')
       setSelected(null)
     }

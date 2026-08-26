@@ -21,7 +21,7 @@ export default function EventsManager() {
     if (!confirm('Supprimer cet événement ?')) return
     try {
       await remove.mutateAsync(id)
-      qc.invalidateQueries({ queryKey: ['admin-events'] })
+      await qc.refetchQueries({ queryKey: ['admin-events'] })
       toast.success('Événement supprimé.')
     }
     catch { toast.error('Erreur.') }
@@ -94,11 +94,11 @@ function EventForm({ event, onClose, onSaved }: { event: Event | null; onClose: 
     try {
       if (event) {
         await update.mutateAsync({ id: event.id, data: form })
-        qc.invalidateQueries({ queryKey: ['admin-events'] })
+        await qc.refetchQueries({ queryKey: ['admin-events'] })
         toast.success('Événement mis à jour.')
       } else {
         await create.mutateAsync(form)
-        qc.invalidateQueries({ queryKey: ['admin-events'] })
+        await qc.refetchQueries({ queryKey: ['admin-events'] })
         toast.success('Événement créé.')
       }
       onSaved()

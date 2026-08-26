@@ -40,7 +40,7 @@ export default function Settings() {
     setLoading(true)
     try {
       await mutation.mutateAsync(form)
-      qc.invalidateQueries({ queryKey: ['admin-settings'] })
+      await qc.refetchQueries({ queryKey: ['admin-settings'] })
       toast.success('Paramètres enregistrés.')
     } catch {
       toast.error('Erreur lors de la sauvegarde.')

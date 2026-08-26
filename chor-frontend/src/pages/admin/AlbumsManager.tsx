@@ -15,7 +15,7 @@ import type { Album, Track } from '@/types'
 export default function AlbumsManager() {
   const qc = useQueryClient()
   const { data, isLoading } = useAdminAlbums()
-  const albums: Album[] = data?.data ?? (Array.isArray(data) ? data : [])
+  const albums: Album[] = Array.isArray(data) ? data : []
   const { remove, toggleFeatured, uploadCover } = useAdminAlbumMutations()
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState<Album | null>(null)
@@ -27,16 +27,16 @@ export default function AlbumsManager() {
 
   const { create, remove: removeTrack, uploadAudio } = useAdminTrackMutations()
 
-  const invalidate = (albumId: number) => {
-    qc.invalidateQueries({ queryKey: ['admin-albums'] })
-    qc.invalidateQueries({ queryKey: ['admin-album', albumId] })
+  const refetchAlbum = async (albumId?: number) => {
+    await qc.refetchQueries({ queryKey: ['admin-albums'] })
+    if (albumId) await qc.refetchQueries({ queryKey: ['admin-album', albumId] })
   }
 
   const handleDelete = async (id: number) => {
     if (!confirm('Supprimer cet album ?')) return
     try {
       await remove.mutateAsync(id)
-      qc.invalidateQueries({ queryKey: ['admin-albums'] })
+      await refetchAlbum()
       toast.success('Album supprimé.')
     }
     catch { toast.error('Erreur.') }
@@ -45,7 +45,7 @@ export default function AlbumsManager() {
   const handleToggleFeatured = async (id: number) => {
     try {
       await toggleFeatured.mutateAsync(id)
-      qc.invalidateQueries({ queryKey: ['admin-albums'] })
+      await refetchAlbum()
       toast.success('Mis à jour.')
     }
     catch { toast.error('Erreur.') }
@@ -54,7 +54,7 @@ export default function AlbumsManager() {
   const handleCoverUpload = async (id: number, file: File) => {
     try {
       await uploadCover.mutateAsync({ id, file })
-      qc.invalidateQueries({ queryKey: ['admin-albums'] })
+      await refetchAlbum()
       toast.success('Pochette mise à jour.')
     } catch { toast.error('Erreur upload.') }
   }
@@ -63,7 +63,7 @@ export default function AlbumsManager() {
     if (!confirm('Supprimer cette piste ?')) return
     try {
       await removeTrack.mutateAsync(id)
-      invalidate(albumId)
+      await refetchAlbum(albumId)
       toast.success('Piste supprimée.')
     } catch { toast.error('Erreur.') }
   }
@@ -71,7 +71,7 @@ export default function AlbumsManager() {
   const handleAudioUpload = async (id: number, albumId: number, file: File) => {
     try {
       await uploadAudio.mutateAsync({ id, file })
-      invalidate(albumId)
+      await refetchAlbum(albumId)
       toast.success('Audio uploadé.')
     } catch (err) { toast.error(errMsg(err)) }
   }
@@ -114,7 +114,7 @@ export default function AlbumsManager() {
               if (audioFile) {
                 await uploadAudio.mutateAsync({ id: track.data.id, file: audioFile })
               }
-              invalidate(expandedAlbum.id)
+              await refetchAlbum(expandedAlbum.id)
               toast.success('Piste ajoutée.')
               setShowTrackForm(false)
             } catch (err) { toast.error(errMsg(err)) }
@@ -291,11 +291,11 @@ function AlbumForm({ album, onClose, onSaved }: { album: Album | null; onClose: 
     try {
       if (album) {
         await update.mutateAsync({ id: album.id, data: form })
-        qc.invalidateQueries({ queryKey: ['admin-albums'] })
+        await qc.refetchQueries({ queryKey: ['admin-albums'] })
         toast.success('Album mis à jour.')
       } else {
         await create.mutateAsync(form)
-        qc.invalidateQueries({ queryKey: ['admin-albums'] })
+        await qc.refetchQueries({ queryKey: ['admin-albums'] })
         toast.success('Album créé.')
       }
       onSaved()
