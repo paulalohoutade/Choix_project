@@ -96,6 +96,7 @@ export function useMe() {
     queryKey: ['me'],
     queryFn: () => authApi.me().then(r => r.data),
     retry: false,
+    staleTime: 0,
     enabled: !!localStorage.getItem('cec_token'),
   })
 }

@@ -21,6 +21,7 @@ export default function AdminLogin() {
     setLoading(true)
     try {
       const res = await authApi.login(email, password)
+      if (!res.data?.token) throw new Error('Aucun token reçu')
       localStorage.setItem('cec_token', res.data.token)
       toast.success('Connexion réussie !')
       navigate('/admin/albums')
