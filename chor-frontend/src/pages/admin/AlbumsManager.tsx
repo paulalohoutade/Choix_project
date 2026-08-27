@@ -25,7 +25,7 @@ export default function AlbumsManager() {
   const { data: expandedAlbum } = useAdminAlbum(expandedId ?? 0)
   const tracks: Track[] = expandedAlbum?.tracks ?? []
 
-  const { create, remove: removeTrack, uploadAudio } = useAdminTrackMutations()
+  const { create, update: updateTrack, remove: removeTrack, uploadAudio } = useAdminTrackMutations()
 
   const refetchAlbum = async (albumId?: number) => {
     await qc.refetchQueries({ queryKey: ['admin-albums'] })
@@ -71,6 +71,10 @@ export default function AlbumsManager() {
   const handleAudioUpload = async (id: number, albumId: number, file: File) => {
     try {
       await uploadAudio.mutateAsync({ id, file })
+      const seconds = await detectAudioDuration(file)
+      if (seconds !== null) {
+        await updateTrack.mutateAsync({ id, data: { duration_seconds: seconds } })
+      }
       await refetchAlbum(albumId)
       toast.success('Audio uploadé.')
     } catch (err) { toast.error(errMsg(err)) }
@@ -377,6 +381,21 @@ function toClock(seconds: number): string {
   let s = Math.round(seconds % 60)
   if (s === 60) { m += 1; s = 0 }
   return `${m}:${s.toString().padStart(2, '0')}`
+}
+
+function detectAudioDuration(file: File): Promise<number | null> {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(file)
+    const audio = new Audio(url)
+    audio.preload = 'metadata'
+    const done = () => URL.revokeObjectURL(url)
+    audio.addEventListener('loadedmetadata', () => {
+      const d = Number.isFinite(audio.duration) && audio.duration > 0 ? Math.round(audio.duration) : null
+      done()
+      resolve(d)
+    })
+    audio.addEventListener('error', () => { done(); resolve(null) })
+  })
 }
 
 function TrackForm({
