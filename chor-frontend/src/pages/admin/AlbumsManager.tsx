@@ -372,6 +372,13 @@ function parseDuration(input: string): number | null {
   return parts[0] * 3600 + parts[1] * 60 + seconds
 }
 
+function toClock(seconds: number): string {
+  let m = Math.floor(seconds / 60)
+  let s = Math.round(seconds % 60)
+  if (s === 60) { m += 1; s = 0 }
+  return `${m}:${s.toString().padStart(2, '0')}`
+}
+
 function TrackForm({
   album, nextNumber, onClose, onSaved,
 }: {
@@ -385,6 +392,23 @@ function TrackForm({
   const [isDownloadable, setIsDownloadable] = useState(false)
   const [audioFile, setAudioFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
+
+  const handleAudioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] ?? null
+    setAudioFile(file)
+    if (!file) return
+    const url = URL.createObjectURL(file)
+    const audio = new Audio(url)
+    audio.preload = 'metadata'
+    const cleanup = () => URL.revokeObjectURL(url)
+    audio.addEventListener('loadedmetadata', () => {
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        setDuration(toClock(audio.duration))
+      }
+      cleanup()
+    })
+    audio.addEventListener('error', cleanup)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -436,7 +460,7 @@ function TrackForm({
           <div>
             <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Fichier audio</label>
             <input type="file" accept=".mp3,.wav,.ogg,.m4a,.flac,.aac,.opus,.aiff,.wma,.oga,.m4b,.mp2,.mp4" className="input-field"
-              onChange={e => setAudioFile(e.target.files?.[0] ?? null)} />
+              onChange={handleAudioChange} />
           </div>
           <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
             <input type="checkbox" checked={isDownloadable} onChange={e => setIsDownloadable(e.target.checked)}

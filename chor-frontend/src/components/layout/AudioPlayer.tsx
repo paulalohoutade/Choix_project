@@ -67,7 +67,7 @@ function PlayerBar({ track }: { track: NonNullable<ReturnType<typeof useCurrentT
             value={progress}
             onChange={(e) => seekTo(Number(e.target.value))}
             style={{ '--range-value': `${progress * 100}%` } as React.CSSProperties}
-            className="flex-1 cursor-pointer"
+            className="relative z-10 flex-1 cursor-pointer"
           />
           <span className="text-white/50 text-xs font-mono w-10">{fmt(duration)}</span>
         </div>
