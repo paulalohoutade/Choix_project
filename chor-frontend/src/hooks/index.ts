@@ -94,9 +94,16 @@ export function usePublicSettings() {
 export function useMe() {
   return useQuery({
     queryKey: ['me'],
-    queryFn: () => authApi.me().then(r => r.data),
+    queryFn: () => authApi.me().then(r => {
+      const d = r.data
+      if (!d || typeof d !== 'object' || !d.id || !d.email) {
+        throw new Error('Session invalide')
+      }
+      return d
+    }),
     retry: false,
     staleTime: 0,
+    gcTime: 0,
     enabled: !!localStorage.getItem('cec_token'),
   })
 }
