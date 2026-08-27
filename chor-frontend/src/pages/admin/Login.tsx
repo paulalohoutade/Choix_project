@@ -13,9 +13,11 @@ export default function AdminLogin() {
   const [showForgot, setShowForgot] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [photoFailed, setPhotoFailed] = useState(false)
+  const [loginError, setLoginError] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoginError(false)
     setLoading(true)
     try {
       const res = await authApi.login(email, password)
@@ -23,7 +25,7 @@ export default function AdminLogin() {
       toast.success('Connexion réussie !')
       navigate('/admin/albums')
     } catch {
-      toast.error('Email ou mot de passe incorrect.')
+      setLoginError(true)
     } finally {
       setLoading(false)
     }
@@ -99,6 +101,11 @@ export default function AdminLogin() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3">
+              {loginError && (
+                <div className="bg-red-50 border border-red-200 text-red-600 text-sm font-medium rounded-lg px-4 py-3">
+                  Les données fournies sont invalides
+                </div>
+              )}
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
                   Email
@@ -106,7 +113,10 @@ export default function AdminLogin() {
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    setLoginError(false)
+                  }}
                   placeholder="admin@chorale-ecc.org"
                   required
                   className="input-field"
@@ -131,7 +141,10 @@ export default function AdminLogin() {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value)
+                      setLoginError(false)
+                    }}
                     placeholder="••••••••"
                     required
                     className="input-field pr-10"
