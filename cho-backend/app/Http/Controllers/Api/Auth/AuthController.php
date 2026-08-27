@@ -30,7 +30,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $token = $user->createToken('chorale-admin')->plainTextToken;
+        $token = $user->createToken('chorale-admin', ['*'], now()->addHours(8))->plainTextToken;
 
         return response()->json([
             'token' => $token,
