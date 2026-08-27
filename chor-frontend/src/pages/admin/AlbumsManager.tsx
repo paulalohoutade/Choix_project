@@ -248,7 +248,7 @@ function AlbumRows({
                         </p>
                       </div>
                       {track.audio_url && (
-                        <audio src={track.audio_url} controls preload="none" className="h-9 max-w-[180px]" />
+                        <audio src={track.audio_url} controls preload="none" className="admin-audio h-9 max-w-[180px]" />
                       )}
                       <Badge color={track.source_type === 'local' ? 'green' : track.source_type === 'none' ? 'gray' : 'blue'}>
                         {track.source_type === 'local' ? 'Local' : track.source_type === 'none' ? '—' : 'Liens'}

@@ -170,3 +170,12 @@ input[type='range']::-moz-range-thumb {
     @apply inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full;
   }
 }
+
+.admin-audio::-webkit-media-controls-volume-slider,
+.admin-audio::-webkit-media-controls-mute-button,
+.admin-audio::-webkit-media-controls-volume-control-container {
+  display: none !important;
+}
+.admin-audio::-webkit-media-controls-enclosure {
+  overflow: hidden;
+}
