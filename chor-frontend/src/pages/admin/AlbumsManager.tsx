@@ -9,6 +9,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader, AdminTable } from './Dashboard'
 import { Button, Badge } from '@/components/ui'
+import { useConfirm } from '@/components/ui/confirm'
 import toast from 'react-hot-toast'
 import type { Album, Track } from '@/types'
 
@@ -26,6 +27,7 @@ export default function AlbumsManager() {
   const tracks: Track[] = expandedAlbum?.tracks ?? []
 
   const { create, update: updateTrack, remove: removeTrack, uploadAudio } = useAdminTrackMutations()
+  const { confirm, dialog } = useConfirm()
 
   const refetchAlbum = async (albumId?: number) => {
     await qc.refetchQueries({ queryKey: ['admin-albums'] })
@@ -33,7 +35,11 @@ export default function AlbumsManager() {
   }
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Supprimer cet album ?')) return
+    const ok = await confirm({
+      title: 'Supprimer cet album ?',
+      message: 'Voulez-vous vraiment supprimer cet album et toutes ses pistes ? Cette action est définitive.',
+    })
+    if (!ok) return
     try {
       await remove.mutateAsync(id)
       await refetchAlbum()
@@ -60,7 +66,11 @@ export default function AlbumsManager() {
   }
 
   const handleDeleteTrack = async (id: number, albumId: number) => {
-    if (!confirm('Supprimer cette piste ?')) return
+    const ok = await confirm({
+      title: 'Supprimer cette piste ?',
+      message: 'Voulez-vous vraiment supprimer cette piste de l\'album ? Elle ne pourra plus être écoutée.',
+    })
+    if (!ok) return
     try {
       await removeTrack.mutateAsync(id)
       await refetchAlbum(albumId)
@@ -153,6 +163,7 @@ export default function AlbumsManager() {
           ))}
         </AdminTable>
       )}
+      {dialog}
     </div>
   )
 }

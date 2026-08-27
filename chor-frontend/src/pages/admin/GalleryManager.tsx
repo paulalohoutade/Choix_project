@@ -4,6 +4,7 @@ import { useAdminGallery, useAdminGalleryMutations } from '@/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader, AdminTable } from './Dashboard'
 import { Button } from '@/components/ui'
+import { useConfirm } from '@/components/ui/confirm'
 import toast from 'react-hot-toast'
 import type { GalleryItem } from '@/types'
 
@@ -12,6 +13,7 @@ export default function GalleryManager() {
   const { data, isLoading } = useAdminGallery()
   const items: GalleryItem[] = Array.isArray(data) ? data : []
   const { upload, remove } = useAdminGalleryMutations()
+  const { confirm, dialog } = useConfirm()
   const [showUpload, setShowUpload] = useState(false)
   const [uploading, setUploading] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -20,7 +22,11 @@ export default function GalleryManager() {
   const refetch = () => qc.refetchQueries({ queryKey: ['admin-gallery'] })
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Supprimer cet élément ?')) return
+    const ok = await confirm({
+      title: 'Supprimer cet élément ?',
+      message: 'Voulez-vous vraiment supprimer cette photo ou cette vidéo de la galerie ? Elle disparaîtra définitivement.',
+    })
+    if (!ok) return
     try {
       await remove.mutateAsync(id)
       await refetch()
@@ -129,6 +135,7 @@ export default function GalleryManager() {
           ))}
         </div>
       )}
+      {dialog}
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { useAdminPosts, useAdminPostMutations } from '@/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader, AdminTable } from './Dashboard'
 import { Button, Badge } from '@/components/ui'
+import { useConfirm } from '@/components/ui/confirm'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import toast from 'react-hot-toast'
@@ -14,11 +15,16 @@ export default function PostsManager() {
   const { data, isLoading } = useAdminPosts()
   const posts: Post[] = data?.data ?? (Array.isArray(data) ? data : [])
   const { remove, publish } = useAdminPostMutations()
+  const { confirm, dialog } = useConfirm()
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState<Post | null>(null)
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Supprimer cet article ?')) return
+    const ok = await confirm({
+      title: 'Supprimer l\'article ?',
+      message: 'Voulez-vous vraiment supprimer cet article ? Il ne sera plus visible sur le site.',
+    })
+    if (!ok) return
     try {
       await remove.mutateAsync(id)
       await qc.refetchQueries({ queryKey: ['admin-posts'] })
@@ -86,6 +92,7 @@ export default function PostsManager() {
           ))}
         </AdminTable>
       )}
+      {dialog}
     </div>
   )
 }

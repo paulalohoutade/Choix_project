@@ -4,6 +4,7 @@ import { useAdminMembers, useAdminMemberMutations } from '@/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader, AdminTable } from './Dashboard'
 import { Button } from '@/components/ui'
+import { useConfirm } from '@/components/ui/confirm'
 import toast from 'react-hot-toast'
 import type { Member } from '@/types'
 
@@ -12,11 +13,16 @@ export default function MembersManager() {
   const { data, isLoading } = useAdminMembers()
   const members: Member[] = Array.isArray(data) ? data : []
   const { remove, uploadPhoto } = useAdminMemberMutations()
+  const { confirm, dialog } = useConfirm()
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState<Member | null>(null)
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Supprimer ce membre ?')) return
+    const ok = await confirm({
+      title: 'Supprimer ce membre ?',
+      message: 'Voulez-vous vraiment supprimer ce membre de la chorale ? Son profil disparaîtra définitivement.',
+    })
+    if (!ok) return
     try {
       await remove.mutateAsync(id)
       await qc.refetchQueries({ queryKey: ['admin-members'] })
@@ -94,6 +100,7 @@ export default function MembersManager() {
           ))}
         </AdminTable>
       )}
+      {dialog}
     </div>
   )
 }

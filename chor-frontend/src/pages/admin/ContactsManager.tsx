@@ -4,6 +4,7 @@ import { useAdminContacts, useAdminContactMutations } from '@/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader } from './Dashboard'
 import { Badge } from '@/components/ui'
+import { useConfirm } from '@/components/ui/confirm'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import toast from 'react-hot-toast'
@@ -14,6 +15,7 @@ export default function ContactsManager() {
   const { data, isLoading } = useAdminContacts()
   const contacts: Contact[] = data?.data ?? (Array.isArray(data) ? data : [])
   const { markAsRead, remove } = useAdminContactMutations()
+  const { confirm, dialog } = useConfirm()
   const [selected, setSelected] = useState<Contact | null>(null)
 
   const handleMarkRead = async (id: number) => {
@@ -25,7 +27,11 @@ export default function ContactsManager() {
   }
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Supprimer ce message ?')) return
+    const ok = await confirm({
+      title: 'Supprimer ce message ?',
+      message: 'Voulez-vous vraiment supprimer ce message de contact ? Il sera perdu définitivement.',
+    })
+    if (!ok) return
     try {
       await remove.mutateAsync(id)
       await qc.refetchQueries({ queryKey: ['admin-contacts'] })
@@ -116,6 +122,7 @@ export default function ContactsManager() {
           </div>
         )}
       </div>
+      {dialog}
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { useAdminEvents, useAdminEventMutations } from '@/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader, AdminTable } from './Dashboard'
 import { Button, Badge } from '@/components/ui'
+import { useConfirm } from '@/components/ui/confirm'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import toast from 'react-hot-toast'
@@ -14,11 +15,16 @@ export default function EventsManager() {
   const { data, isLoading } = useAdminEvents()
   const events: Event[] = data?.data ?? (Array.isArray(data) ? data : [])
   const { remove } = useAdminEventMutations()
+  const { confirm, dialog } = useConfirm()
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState<Event | null>(null)
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Supprimer cet événement ?')) return
+    const ok = await confirm({
+      title: 'Supprimer cet événement ?',
+      message: 'Voulez-vous vraiment supprimer cet événement ? Il ne sera plus visible sur le site.',
+    })
+    if (!ok) return
     try {
       await remove.mutateAsync(id)
       await qc.refetchQueries({ queryKey: ['admin-events'] })
@@ -72,6 +78,7 @@ export default function EventsManager() {
           ))}
         </AdminTable>
       )}
+      {dialog}
     </div>
   )
 }
