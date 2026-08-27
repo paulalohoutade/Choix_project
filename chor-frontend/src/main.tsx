@@ -12,16 +12,24 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <App />
       <Toaster
         position="top-center"
+        containerStyle={{ top: '50%', transform: 'translateY(-50%)' }}
         gutter={12}
         toastOptions={{
           style: {
-            borderRadius: '12px',
-            fontSize: '17px',
-            fontWeight: '600',
-            padding: '16px 24px',
+            borderRadius: '16px',
+            fontSize: '22px',
+            fontWeight: '700',
+            padding: '28px 32px',
             fontFamily: 'Montserrat, sans-serif',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
-            maxWidth: '90vw',
+            boxShadow: '0 12px 32px rgba(0,0,0,0.25)',
+            minWidth: '220px',
+            maxWidth: 'min(90vw, 340px)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '10px',
+            textAlign: 'center',
+            lineHeight: 1.3,
           },
           success: {
             style: {
