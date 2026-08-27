@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'react-hot-toast'
+import { CheckCircle2, AlertCircle } from 'lucide-react'
 import { queryClient } from './lib/queryClient'
 import App from './App'
 import './index.css'
@@ -16,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         gutter={12}
         toastOptions={{
           style: {
-            borderRadius: '16px',
+            borderRadius: '0',
             fontSize: '22px',
             fontWeight: '700',
             padding: '28px 32px',
@@ -33,17 +34,19 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           },
           success: {
             style: {
-              background: '#16a34a',
+              background: '#15803d',
               color: '#ffffff',
               border: 'none',
             },
+            icon: <CheckCircle2 size={44} color="#ffffff" strokeWidth={2.5} />,
           },
           error: {
             style: {
-              background: '#dc2626',
+              background: '#b91c1c',
               color: '#ffffff',
               border: 'none',
             },
+            icon: <AlertCircle size={44} color="#ffffff" strokeWidth={2.5} />,
           },
         }}
       />
