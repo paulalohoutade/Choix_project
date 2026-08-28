@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 interface TimeLeft {
-  months: number
+  weeks: number
   days: number
   hours: number
   minutes: number
@@ -14,11 +14,10 @@ function diff(target: Date): TimeLeft {
   const minutes = Math.floor(seconds / 60)
   const hours = Math.floor(minutes / 60)
   const days = Math.floor(hours / 24)
-  const months = Math.floor(days / 30)
 
   return {
-    months,
-    days: days % 30,
+    weeks: Math.floor(days / 7),
+    days: days % 7,
     hours: hours % 24,
     minutes: minutes % 60,
     seconds: seconds % 60,
@@ -38,12 +37,12 @@ export default function EventCountdown({ target }: { target: string | Date }) {
     return () => clearInterval(timer)
   }, [date])
 
-  if (left.months <= 0 && left.days <= 0 && left.hours <= 0 && left.minutes <= 0 && left.seconds <= 0) {
+  if (left.weeks <= 0 && left.days <= 0 && left.hours <= 0 && left.minutes <= 0 && left.seconds <= 0) {
     return null
   }
 
   const units: { label: string; value: number }[] = [
-    { label: 'Mois', value: left.months },
+    { label: 'Sem', value: left.weeks },
     { label: 'Jours', value: left.days },
     { label: 'Heures', value: left.hours },
     { label: 'Min', value: left.minutes },
