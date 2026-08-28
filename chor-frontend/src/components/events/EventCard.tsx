@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import type { Event } from '@/types'
 import { Badge } from '@/components/ui'
+import EventCountdown from './EventCountdown'
 import clsx from 'clsx'
 
 interface Props {
@@ -59,11 +60,11 @@ export default function EventCard({ event, compact = false }: Props) {
               <Badge color={typeColors[event.type] ?? 'blue'}>
                 {event.type}
               </Badge>
+              {event.status === 'upcoming' && (
+                <Badge color="green">À venir</Badge>
+              )}
               {event.status === 'past' && (
                 <Badge color="red">Passé</Badge>
-              )}
-              {event.status === 'ongoing' && (
-                <Badge color="green">En cours</Badge>
               )}
             </div>
             <h3 className="font-display font-bold text-cec-blue text-base mt-1.5 line-clamp-2 group-hover:text-cec-blue-light">
@@ -85,6 +86,11 @@ export default function EventCard({ event, compact = false }: Props) {
             </span>
           )}
         </div>
+
+        {/* Countdown */}
+        {event.status === 'upcoming' && !compact && (
+          <EventCountdown target={event.event_date} />
+        )}
       </div>
     </Link>
   )
