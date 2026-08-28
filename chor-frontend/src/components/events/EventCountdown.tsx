@@ -8,17 +8,17 @@ interface TimeLeft {
 }
 
 function diff(target: Date): TimeLeft {
-  const total = Math.max(0, target.getTime() - Date.now())
-  const seconds = Math.floor(total / 1000)
-  const minutes = Math.floor(seconds / 60)
-  const hours = Math.floor(minutes / 60)
+  const now = new Date()
 
-  return {
-    days: Math.floor(hours / 24),
-    hours: hours % 24,
-    minutes: minutes % 60,
-    seconds: seconds % 60,
-  }
+  const hours = 23 - now.getHours()
+  const minutes = 59 - now.getMinutes()
+  const seconds = 59 - now.getSeconds()
+
+  const targetStart = new Date(target.getFullYear(), target.getMonth(), target.getDate())
+  const tomorrowStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+  const days = Math.max(0, Math.round((targetStart.getTime() - tomorrowStart.getTime()) / 86400000))
+
+  return { days, hours, minutes, seconds }
 }
 
 function pad(n: number): string {
