@@ -33,7 +33,11 @@ export default function EventsManager() {
     catch { toast.error('Erreur.') }
   }
 
-  const statusColor = (s: string) => s === 'upcoming' ? 'green' : s === 'past' ? 'gray' : 'red'
+  const statusLabel = (s: string) =>
+    s === 'upcoming' ? 'À venir' : s === 'ongoing' ? 'En cours' : s === 'past' ? 'Passé' : 'Annulé'
+
+  const statusColor = (s: string): 'green' | 'red' | 'blue' | 'gray' =>
+    s === 'past' || s === 'cancelled' ? 'red' : s === 'ongoing' ? 'green' : 'blue'
 
   return (
     <div>
@@ -64,7 +68,7 @@ export default function EventsManager() {
               </td>
               <td className="px-4 py-3 text-gray-500 text-sm">{ev.location ?? '—'}</td>
               <td className="px-4 py-3">
-                <Badge color={statusColor(ev.status) as 'green' | 'gray' | 'red'}>{ev.status}</Badge>
+                <Badge color={statusColor(ev.status)}>{statusLabel(ev.status)}</Badge>
               </td>
               <td className="px-4 py-3">
                 <div className="flex items-center gap-2">
@@ -143,6 +147,7 @@ function EventForm({ event, onClose, onSaved }: { event: Event | null; onClose: 
               <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Statut</label>
               <select value={form.status} onChange={f('status')} className="input-field">
                 <option value="upcoming">À venir</option>
+                <option value="ongoing">En cours</option>
                 <option value="past">Passé</option>
                 <option value="cancelled">Annulé</option>
               </select>

@@ -60,7 +60,10 @@ export default function EventCard({ event, compact = false }: Props) {
                 {event.type}
               </Badge>
               {event.status === 'past' && (
-                <Badge color="gray">Passé</Badge>
+                <Badge color="red">Passé</Badge>
+              )}
+              {event.status === 'ongoing' && (
+                <Badge color="green">En cours</Badge>
               )}
             </div>
             <h3 className="font-display font-bold text-cec-blue text-base mt-1.5 line-clamp-2 group-hover:text-cec-blue-light">

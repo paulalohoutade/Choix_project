@@ -27,7 +27,7 @@ class AdminEventController extends Controller
             'event_date'  => 'required|date',
             'end_date'    => 'nullable|date|after_or_equal:event_date',
             'type'        => 'in:concert,messe,retraite,tournee,autre',
-            'status'      => 'in:upcoming,past,cancelled',
+            'status'      => 'in:upcoming,ongoing,past,cancelled',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);
@@ -53,7 +53,7 @@ class AdminEventController extends Controller
             'event_date'  => 'sometimes|date',
             'end_date'    => 'nullable|date',
             'type'        => 'in:concert,messe,retraite,tournee,autre',
-            'status'      => 'in:upcoming,past,cancelled',
+            'status'      => 'in:upcoming,ongoing,past,cancelled',
         ]);
 
         $event->update($validated);

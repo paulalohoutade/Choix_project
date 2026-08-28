@@ -59,12 +59,16 @@ class Event extends Model
     {
         return $query
             ->where('status', '!=', 'cancelled')
+            ->where('event_date', '>', now());
+    }
+
+    public function scopeOngoing(Builder $query): Builder
+    {
+        return $query
+            ->where('status', '!=', 'cancelled')
+            ->where('event_date', '<=', now())
             ->where(function (Builder $q) {
-                $q->where(function (Builder $q) {
-                    $q->whereNull('end_date')->where('event_date', '>=', now());
-                })->orWhere(function (Builder $q) {
-                    $q->whereNotNull('end_date')->where('end_date', '>=', now());
-                });
+                $q->whereNull('end_date')->orWhere('end_date', '>=', now());
             });
     }
 
@@ -85,6 +89,7 @@ class Event extends Model
     {
         return match ($status) {
             'upcoming'  => $query->upcoming(),
+            'ongoing'   => $query->ongoing(),
             'past'      => $query->past(),
             'cancelled' => $query->where('status', 'cancelled'),
             default     => $query,
@@ -95,7 +100,8 @@ class Event extends Model
     /**
      * Calcule le statut réel d'un événement à partir de la date et de l'heure :
      * - 'cancelled' reste inchangé ;
-     * - passé dès que event_date (ou end_date si renseignée) est dépassée ;
+     * - 'ongoing' si l'événement a commencé mais n'est pas terminé ;
+     * - 'past' dès que event_date (ou end_date si renseignée) est dépassée ;
      * - sinon 'upcoming'.
      */
     public function classifyStatus(): string
@@ -104,9 +110,19 @@ class Event extends Model
             return 'cancelled';
         }
 
-        $end = $this->end_date ?? $this->event_date;
+        $start = $this->event_date;
+        $end   = $this->end_date ?? $this->event_date;
+        $now   = now();
 
-        return $end->lessThan(now()) ? 'past' : 'upcoming';
+        if ($end->lessThan($now)) {
+            return 'past';
+        }
+
+        if ($start->lessThanOrEqualTo($now)) {
+            return 'ongoing';
+        }
+
+        return 'upcoming';
     }
 
     // ── Accesseurs ─────────────────────────────────────────────────────────

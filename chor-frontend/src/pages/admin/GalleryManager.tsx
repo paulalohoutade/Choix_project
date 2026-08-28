@@ -17,7 +17,7 @@ export default function GalleryManager() {
   const [showUpload, setShowUpload] = useState(false)
   const [uploading, setUploading] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
-  const [uploadForm, setUploadForm] = useState({ title: '', type: 'photo' as 'photo' | 'video' })
+  const [uploadTitle, setUploadTitle] = useState('')
 
   const refetch = () => qc.refetchQueries({ queryKey: ['admin-gallery'] })
 
@@ -41,11 +41,11 @@ export default function GalleryManager() {
     if (!file) return
     setUploading(true)
     try {
-      await upload.mutateAsync({ file, data: { title: uploadForm.title, type: uploadForm.type } })
+      await upload.mutateAsync({ file, data: { title: uploadTitle } })
       await refetch()
       toast.success('Fichier uploadé !')
       setShowUpload(false)
-      setUploadForm({ title: '', type: 'photo' })
+      setUploadTitle('')
       if (fileRef.current) fileRef.current.value = ''
     } catch { toast.error('Erreur upload.') }
     finally { setUploading(false) }
@@ -77,18 +77,9 @@ export default function GalleryManager() {
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Titre</label>
-                <input value={uploadForm.title}
-                  onChange={e => setUploadForm(p => ({ ...p, title: e.target.value }))}
+                <input value={uploadTitle}
+                  onChange={e => setUploadTitle(e.target.value)}
                   className="input-field" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Type</label>
-                <select value={uploadForm.type}
-                  onChange={e => setUploadForm(p => ({ ...p, type: e.target.value as 'photo' | 'video' }))}
-                  className="input-field">
-                  <option value="photo">Photo</option>
-                  <option value="video">Vidéo</option>
-                </select>
               </div>
               <div className="flex gap-3">
                 <Button type="button" variant="outline" onClick={() => setShowUpload(false)} className="flex-1">Annuler</Button>

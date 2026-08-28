@@ -52,7 +52,7 @@ export interface Event {
   cover_image?: string
   cover_url?: string
   type: string
-  status: 'upcoming' | 'past' | 'cancelled'
+  status: 'upcoming' | 'ongoing' | 'past' | 'cancelled'
   created_at: string
   updated_at: string
 }

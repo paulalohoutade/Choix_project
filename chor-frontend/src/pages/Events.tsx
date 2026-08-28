@@ -8,6 +8,7 @@ import clsx from 'clsx'
 
 const statuses = [
   { value: '', label: 'Tous' },
+  { value: 'ongoing', label: 'En cours' },
   { value: 'upcoming', label: 'À venir' },
   { value: 'past', label: 'Passés' },
 ]
