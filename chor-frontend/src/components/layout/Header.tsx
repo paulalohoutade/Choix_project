@@ -110,7 +110,7 @@ export default function Header() {
 
           <div
             className={clsx(
-              'fixed inset-y-0 right-0 z-[60] w-72 bg-stone-100 border-l border-stone-200 lg:hidden',
+              'fixed inset-y-0 right-0 z-[60] w-60 bg-stone-100 border-l border-stone-200 lg:hidden',
               'flex flex-col',
               'transition-transform duration-300',
               open ? 'translate-x-0' : 'translate-x-full pointer-events-none'
@@ -130,7 +130,7 @@ export default function Header() {
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
                     clsx(
-                      'block px-4 py-3 text-sm font-semibold font-body transition-colors border-r-[4px] text-right',
+                      'block px-4 py-3 text-sm font-semibold font-body transition-colors border-l-[4px] text-left',
                       isActive
                         ? 'text-gray-900 border-stone-400 bg-stone-200'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-stone-200 border-transparent'
