@@ -72,7 +72,7 @@ export default function GalleryManager() {
             </div>
             <form onSubmit={handleUpload} className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Fichier *</label>
+                <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Fichier <span className="text-red-500">*</span></label>
                 <input ref={fileRef} type="file" accept="image/*,video/*" required className="input-field" />
               </div>
               <div>

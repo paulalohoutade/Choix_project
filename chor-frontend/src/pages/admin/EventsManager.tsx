@@ -131,7 +131,7 @@ function EventForm({ event, onClose, onSaved }: { event: Event | null; onClose: 
         </div>
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Titre *</label>
+            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Titre <span className="text-red-500">*</span></label>
             <input value={form.title} onChange={f('title')} required className="input-field" />
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -154,7 +154,7 @@ function EventForm({ event, onClose, onSaved }: { event: Event | null; onClose: 
             </div>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Date *</label>
+            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Date <span className="text-red-500">*</span></label>
             <input type="datetime-local" value={form.event_date} onChange={f('event_date')} required className="input-field" />
           </div>
           <div>

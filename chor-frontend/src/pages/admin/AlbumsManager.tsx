@@ -329,7 +329,7 @@ function AlbumForm({ album, onClose, onSaved }: { album: Album | null; onClose: 
         </div>
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Titre *</label>
+            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Titre <span className="text-red-500">*</span></label>
             <input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
               required className="input-field" placeholder="Nom de l'album" />
           </div>
@@ -340,7 +340,7 @@ function AlbumForm({ album, onClose, onSaved }: { album: Album | null; onClose: 
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Année *</label>
+              <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Année <span className="text-red-500">*</span></label>
               <input type="number" value={form.release_year}
                 onChange={e => setForm(p => ({ ...p, release_year: Number(e.target.value) }))}
                 required min={1900} max={2100} className="input-field" />
@@ -472,7 +472,7 @@ function TrackForm({
             <input value={album.title} disabled className="input-field bg-stone-50" />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Titre *</label>
+            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Titre <span className="text-red-500">*</span></label>
             <input value={title} onChange={e => setTitle(e.target.value)} required
               className="input-field" placeholder="Titre de la piste" />
           </div>

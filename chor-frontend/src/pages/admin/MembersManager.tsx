@@ -143,7 +143,7 @@ function MemberForm({ member, onClose, onSaved }: { member: Member | null; onClo
         </div>
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Nom *</label>
+            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Nom <span className="text-red-500">*</span></label>
             <input value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required className="input-field" />
           </div>
           <div>
