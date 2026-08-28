@@ -110,14 +110,14 @@ export default function Header() {
 
           <div
             className={clsx(
-              'fixed inset-y-0 right-0 z-[60] w-60 bg-stone-100 border-l border-stone-200 lg:hidden',
+              'fixed inset-y-0 right-0 z-[60] w-60 bg-blue-50 border-l border-blue-100 lg:hidden',
               'flex flex-col',
               'transition-transform duration-300',
               open ? 'translate-x-0' : 'translate-x-full pointer-events-none'
             )}
           >
-            <div className="flex items-center justify-end px-5 h-16 border-b border-stone-200">
-              <button onClick={() => setOpen(false)} className="text-gray-500 hover:text-gray-800 p-1" aria-label="Fermer">
+            <div className="flex items-center justify-end px-5 h-16 border-b border-blue-100">
+              <button onClick={() => setOpen(false)} className="text-blue-400 hover:text-blue-700 p-1" aria-label="Fermer">
                 <X size={22} />
               </button>
             </div>
@@ -132,8 +132,8 @@ export default function Header() {
                     clsx(
                       'block px-4 py-3 text-sm font-semibold font-body transition-colors border-l-[4px] text-left',
                       isActive
-                        ? 'text-gray-900 border-stone-400 bg-stone-200'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-stone-200 border-transparent'
+                        ? 'text-blue-900 border-blue-500 bg-blue-100'
+                        : 'text-blue-700 hover:text-blue-900 hover:bg-blue-100 border-transparent'
                     )
                   }
                 >
