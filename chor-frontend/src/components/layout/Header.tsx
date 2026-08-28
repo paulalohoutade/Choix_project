@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Menu, X, Music } from 'lucide-react'
 import clsx from 'clsx'
@@ -97,49 +98,53 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Overlay mobile */}
-      {open && (
-        <div
-          className="fixed inset-0 z-50 bg-black/50 lg:hidden"
-          onClick={() => setOpen(false)}
-        />
-      )}
-
-      {/* Drawer mobile — glisse depuis la gauche */}
-      <div
-        className={clsx(
-          'fixed inset-y-0 left-0 z-50 w-72 bg-stone-100 border-r border-stone-200 lg:hidden',
-          'flex flex-col',
-          'transition-transform duration-300',
-          open ? 'translate-x-0' : '-translate-x-full pointer-events-none'
-        )}
-      >
-        <div className="flex items-center justify-end px-5 h-16 border-b border-stone-200">
-          <button onClick={() => setOpen(false)} className="text-gray-500 hover:text-gray-800 p-1" aria-label="Fermer">
-            <X size={22} />
-          </button>
-        </div>
-        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
-          {links.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              end={l.to === '/'}
+      {/* Overlay + Drawer mobile — rendus via portal pour s'afficher par-dessus toute la page */}
+      {createPortal(
+        <>
+          {open && (
+            <div
+              className="fixed inset-0 z-[60] bg-black/50 lg:hidden"
               onClick={() => setOpen(false)}
-              className={({ isActive }) =>
-                clsx(
-                  'block px-4 py-3 text-sm font-semibold font-body transition-colors border-l-[4px]',
-                  isActive
-                    ? 'text-gray-900 border-stone-400 bg-stone-200'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-stone-200 border-transparent'
-                )
-              }
-            >
-              {l.label}
-            </NavLink>
-          ))}
-        </nav>
-      </div>
+            />
+          )}
+
+          <div
+            className={clsx(
+              'fixed inset-y-0 left-0 z-[60] w-72 bg-stone-100 border-r border-stone-200 lg:hidden',
+              'flex flex-col',
+              'transition-transform duration-300',
+              open ? 'translate-x-0' : '-translate-x-full pointer-events-none'
+            )}
+          >
+            <div className="flex items-center justify-end px-5 h-16 border-b border-stone-200">
+              <button onClick={() => setOpen(false)} className="text-gray-500 hover:text-gray-800 p-1" aria-label="Fermer">
+                <X size={22} />
+              </button>
+            </div>
+            <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+              {links.map((l) => (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  end={l.to === '/'}
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    clsx(
+                      'block px-4 py-3 text-sm font-semibold font-body transition-colors border-l-[4px]',
+                      isActive
+                        ? 'text-gray-900 border-stone-400 bg-stone-200'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-stone-200 border-transparent'
+                    )
+                  }
+                >
+                  {l.label}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+        </>,
+        document.body
+      )}
     </header>
   )
 }
