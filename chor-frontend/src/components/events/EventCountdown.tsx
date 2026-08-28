@@ -47,11 +47,11 @@ export default function EventCountdown({ target }: { target: string | Date }) {
 
   return (
     <div className="mt-4">
-      <div className="grid grid-cols-5 gap-1.5 text-center">
+      <div className="grid grid-cols-4 gap-1.5 text-center">
         {units.map((u) => (
-          <div key={u.label} className="bg-cec-blue text-white py-2 rounded-lg">
-            <p className="font-display font-bold text-lg leading-none">{pad(u.value)}</p>
-            <p className="text-[10px] uppercase tracking-wide text-cec-gold mt-0.5">{u.label}</p>
+          <div key={u.label} className="bg-stone-100 py-2 rounded-lg">
+            <p className="font-display font-bold text-lg leading-none text-stone-700">{pad(u.value)}</p>
+            <p className="text-[10px] uppercase tracking-wide text-stone-400 mt-0.5">{u.label}</p>
           </div>
         ))}
       </div>
