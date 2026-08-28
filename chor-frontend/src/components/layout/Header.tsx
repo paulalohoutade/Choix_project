@@ -97,31 +97,50 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Overlay mobile */}
       {open && (
-        <div className="lg:hidden bg-cec-dark border-t border-cec-gold/20">
-          <nav className="px-4 py-4 space-y-1">
-            {links.map((l) => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                end={l.to === '/'}
-                onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  clsx(
-                    'block px-4 py-3 text-sm font-semibold font-body transition-colors border-l-[4px]',
-                    isActive
-                      ? 'text-white border-yellow-400 bg-white/5'
-                      : 'text-white/80 hover:text-yellow-400 border-transparent hover:bg-white/5'
-                  )
-                }
-              >
-                {l.label}
-              </NavLink>
-            ))}
-          </nav>
-        </div>
+        <div
+          className="fixed inset-0 z-50 bg-black/50 lg:hidden"
+          onClick={() => setOpen(false)}
+        />
       )}
+
+      {/* Drawer mobile — glisse depuis la droite */}
+      <div
+        className={clsx(
+          'fixed inset-y-0 right-0 z-50 w-72 bg-cec-dark border-l border-cec-gold/20 lg:hidden',
+          'flex flex-col',
+          'transition-transform duration-300',
+          open ? 'translate-x-0' : 'translate-x-full pointer-events-none'
+        )}
+      >
+        <div className="flex items-center justify-between px-5 h-16 border-b border-cec-gold/20">
+          <span className="font-display font-bold text-white">Menu</span>
+          <button onClick={() => setOpen(false)} className="text-white/80 hover:text-white p-1" aria-label="Fermer">
+            <X size={22} />
+          </button>
+        </div>
+        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+          {links.map((l) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.to === '/'}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) =>
+                clsx(
+                  'block px-4 py-3 text-sm font-semibold font-body transition-colors border-l-[4px]',
+                  isActive
+                    ? 'text-white border-yellow-400 bg-white/5'
+                    : 'text-white/80 hover:text-yellow-400 border-transparent hover:bg-white/5'
+                )
+              }
+            >
+              {l.label}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
     </header>
   )
 }
