@@ -117,7 +117,7 @@ export default function Header() {
             )}
           >
             <div className="flex items-center justify-end px-5 h-16 border-b border-blue-100">
-              <button onClick={() => setOpen(false)} className="text-blue-400 hover:text-blue-700 p-1" aria-label="Fermer">
+              <button onClick={() => setOpen(false)} className="text-gray-900 hover:text-black p-1" aria-label="Fermer">
                 <X size={22} />
               </button>
             </div>
@@ -132,8 +132,8 @@ export default function Header() {
                     clsx(
                       'block px-4 py-3 text-sm font-semibold font-body transition-colors border-l-[4px] text-left',
                       isActive
-                        ? 'text-blue-900 border-blue-500 bg-blue-100'
-                        : 'text-blue-700 hover:text-blue-900 hover:bg-blue-100 border-transparent'
+                        ? 'text-black border-blue-500 bg-blue-100'
+                        : 'text-gray-900 hover:text-black hover:bg-blue-100 border-transparent'
                     )
                   }
                 >
