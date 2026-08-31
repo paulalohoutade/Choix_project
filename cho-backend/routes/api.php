@@ -29,7 +29,6 @@ use App\Http\Controllers\Api\Admin\AdminGalleryController;
 use App\Http\Controllers\Api\Admin\AdminMemberController;
 use App\Http\Controllers\Api\Admin\AdminContactController;
 use App\Http\Controllers\Api\Admin\AdminSettingController;
-use App\Http\Controllers\Api\Admin\MediaDiagnosticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,9 +77,6 @@ Route::prefix('v1')->group(function () {
     Route::get('media/{path}', [MediaController::class, 'show'])
         ->name('media.show')
         ->where('path', '.*');
-
-    // Diagnostic stockage médias (TEMPORAIRE — retirer après résolution)
-    Route::get('media-diagnostic', [MediaDiagnosticController::class, 'run']);
 
     // Authentification + reset mot de passe
     Route::post('auth/login',           [AuthController::class, 'login']);

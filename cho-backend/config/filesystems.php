@@ -39,10 +39,16 @@ return [
         ],
 
         'public' => [
-            // "local" (défaut) ou "s3" — pilote le stockage des médias partout dans l'app
-            'driver' => env('MEDIA_DISK_DRIVER', 'local'),
+            // "local" (par défaut) ou "s3" — pilote le stockage des médias partout dans l'app.
+            // Force s3 dès que les credentials Backblaze B2 sont présents, pour ne JAMAIS
+            // retomber en local (qui n'est pas persistant sur les plateformes type Render).
+            'driver' => env('AWS_BUCKET') && env('AWS_ACCESS_KEY_ID')
+                            ? 's3'
+                            : env('MEDIA_DISK_DRIVER', 'local'),
             // ── Options disque local ──────────────────────────────────────
-            'root' => env('MEDIA_DISK_DRIVER') === 's3' ? '' : storage_path('app/public'),
+            'root' => env('AWS_BUCKET') && env('AWS_ACCESS_KEY_ID')
+                            ? ''
+                            : storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'private',
             // ── Options S3 / Backblaze B2 (ignorées si driver local) ─────
