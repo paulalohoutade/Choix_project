@@ -79,6 +79,9 @@ Route::prefix('v1')->group(function () {
         ->name('media.show')
         ->where('path', '.*');
 
+    // Diagnostic stockage médias (TEMPORAIRE — retirer après résolution)
+    Route::get('media-diagnostic', [MediaDiagnosticController::class, 'run']);
+
     // Authentification + reset mot de passe
     Route::post('auth/login',           [AuthController::class, 'login']);
     Route::post('auth/forgot-password', [AuthController::class, 'forgotPassword']);
@@ -140,8 +143,5 @@ Route::prefix('v1/admin')
     // Paramètres
     Route::get('settings',             [AdminSettingController::class, 'index']);
     Route::put('settings',             [AdminSettingController::class, 'update']);
-
-    // Diagnostic stockage médias (enlever après résolution)
-    Route::get('media-diagnostic',     [MediaDiagnosticController::class, 'run']);
 
 });
