@@ -23,6 +23,7 @@ export default function AdminLogin() {
       const res = await authApi.login(email, password)
       if (!res.data?.token) throw new Error('Aucun token reçu')
       localStorage.setItem('cec_token', res.data.token)
+      localStorage.setItem('cec_token_expiry', String(Date.now() + 8 * 60 * 60 * 1000))
       toast.success('Connexion réussie !')
       navigate('/admin/albums')
     } catch {

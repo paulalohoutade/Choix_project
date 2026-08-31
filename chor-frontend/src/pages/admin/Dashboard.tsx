@@ -30,6 +30,7 @@ export default function Dashboard() {
       await authApi.logout()
     } catch { /* ignore */ }
     localStorage.removeItem('cec_token')
+    localStorage.removeItem('cec_token_expiry')
     toast.success('Déconnecté.')
     navigate('/admin/login')
   }

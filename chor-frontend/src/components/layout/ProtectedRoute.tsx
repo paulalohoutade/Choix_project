@@ -10,9 +10,18 @@ export default function ProtectedRoute({ children }: Props) {
   const token = localStorage.getItem('cec_token')
   const { isLoading, isError } = useMe()
 
-  if (!token) return <Navigate to="/admin/login" replace />
+  // Détecter l'expiration du token dès le retour (navigateur fermé puis rouvert)
+  const expiry = localStorage.getItem('cec_token_expiry')
+  const expired = !!token && !!expiry && Date.now() > Number(expiry)
+
+  if (!token || expired) {
+    localStorage.removeItem('cec_token')
+    localStorage.removeItem('cec_token_expiry')
+    return <Navigate to="/admin/login" replace />
+  }
   if (isError) {
     localStorage.removeItem('cec_token')
+    localStorage.removeItem('cec_token_expiry')
     return <Navigate to="/admin/login" replace />
   }
   if (isLoading) return null
