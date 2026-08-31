@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\Admin\AdminGalleryController;
 use App\Http\Controllers\Api\Admin\AdminMemberController;
 use App\Http\Controllers\Api\Admin\AdminContactController;
 use App\Http\Controllers\Api\Admin\AdminSettingController;
+use App\Http\Controllers\Api\Admin\MediaDiagnosticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,5 +140,8 @@ Route::prefix('v1/admin')
     // Paramètres
     Route::get('settings',             [AdminSettingController::class, 'index']);
     Route::put('settings',             [AdminSettingController::class, 'update']);
+
+    // Diagnostic stockage médias (enlever après résolution)
+    Route::get('media-diagnostic',     [MediaDiagnosticController::class, 'run']);
 
 });
