@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import AudioPlayer from '@/components/layout/AudioPlayer'
@@ -13,6 +13,7 @@ import Gallery from '@/pages/Gallery'
 import Members from '@/pages/Members'
 import Contact from '@/pages/Contact'
 import APropos from '@/pages/APropos'
+import NotFound from '@/pages/NotFound'
 import AdminLogin from '@/pages/admin/Login'
 import ResetPassword from '@/pages/admin/ResetPassword'
 import Dashboard from '@/pages/admin/Dashboard'
@@ -48,7 +49,7 @@ export default function App() {
                   <Route path="/membres" element={<Members />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/apropos" element={<APropos />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
+                  <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
               <Footer />
@@ -75,6 +76,7 @@ export default function App() {
           <Route path="members" element={<AdminMembers />} />
           <Route path="contacts" element={<AdminContacts />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
