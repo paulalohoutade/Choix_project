@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Upload, Trash2, X, Play } from 'lucide-react'
+import { Upload, Trash2, X, Play, Images } from 'lucide-react'
 import { useAdminGallery, useAdminGalleryMutations } from '@/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { AdminPageHeader, AdminTable } from './Dashboard'
@@ -12,12 +12,13 @@ export default function GalleryManager() {
   const qc = useQueryClient()
   const { data, isLoading } = useAdminGallery()
   const items: GalleryItem[] = Array.isArray(data) ? data : []
-  const { upload, remove } = useAdminGalleryMutations()
+  const { uploadMultiple, remove } = useAdminGalleryMutations()
   const { confirm, dialog } = useConfirm()
   const [showUpload, setShowUpload] = useState(false)
   const [uploading, setUploading] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploadTitle, setUploadTitle] = useState('')
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([])
 
   const refetch = () => qc.refetchQueries({ queryKey: ['admin-gallery'] })
 
@@ -35,17 +36,23 @@ export default function GalleryManager() {
     catch { toast.error('Erreur.') }
   }
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files ? Array.from(e.target.files) : []
+    setSelectedFiles(files)
+  }
+
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault()
-    const file = fileRef.current?.files?.[0]
-    if (!file) return
+    if (selectedFiles.length === 0) return
     setUploading(true)
     try {
-      await upload.mutateAsync({ file, data: { title: uploadTitle } })
+      const res = await uploadMultiple.mutateAsync({ files: selectedFiles, data: { title: uploadTitle } })
+      const count = Array.isArray(res.data) ? res.data.length : 1
       await refetch()
-      toast.success('Fichier uploadé !')
+      toast.success(`${count} fichier${count > 1 ? 's' : ''} uploadé${count > 1 ? 's' : ''} !`)
       setShowUpload(false)
       setUploadTitle('')
+      setSelectedFiles([])
       if (fileRef.current) fileRef.current.value = ''
     } catch { toast.error('Erreur upload.') }
     finally { setUploading(false) }
@@ -72,11 +79,24 @@ export default function GalleryManager() {
             </div>
             <form onSubmit={handleUpload} className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Fichier <span className="text-red-500">*</span></label>
-                <input ref={fileRef} type="file" accept="image/*,video/*" required className="input-field" />
+                <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Fichiers <span className="text-red-500">*</span></label>
+                <input ref={fileRef} type="file" accept="image/*,video/*" multiple onChange={handleFileSelect} required className="input-field" />
+                <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
+                  <Images size={12} /> Vous pouvez sélectionner une ou plusieurs images / vidéos.
+                </p>
               </div>
+              {selectedFiles.length > 0 && (
+                <div className="bg-stone-50 border border-stone-200 rounded-lg p-2 max-h-32 overflow-y-auto">
+                  {selectedFiles.map((f, i) => (
+                    <div key={`${f.name}-${i}`} className="flex items-center justify-between text-xs px-2 py-1">
+                      <span className="truncate text-gray-600">{f.name}</span>
+                      <span className="text-gray-400 ml-2 shrink-0">{Math.round(f.size / 1024)} Ko</span>
+                    </div>
+                  ))}
+                </div>
+              )}
               <div>
-                <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Titre</label>
+                <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">Titre (appliqué à tous)</label>
                 <input value={uploadTitle}
                   onChange={e => setUploadTitle(e.target.value)}
                   className="input-field" />

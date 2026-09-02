@@ -159,6 +159,12 @@ export const adminGalleryApi = {
     Object.entries(data).forEach(([k, v]) => fd.append(k, v))
     return api.post('/admin/gallery/upload', fd)
   },
+  uploadMultiple: (files: File[], data: Record<string, string>) => {
+    const fd = new FormData()
+    files.forEach((f, i) => fd.append('files[]', f))
+    Object.entries(data).forEach(([k, v]) => fd.append(k, v))
+    return api.post('/admin/gallery/upload', fd)
+  },
   update: (id: number, data: unknown) => api.put(`/admin/gallery/${id}`, data),
   delete: (id: number) => api.delete(`/admin/gallery/${id}`),
   reorder: (data: unknown) => api.post('/admin/gallery/reorder', data),

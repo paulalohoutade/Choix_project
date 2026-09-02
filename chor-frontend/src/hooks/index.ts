@@ -180,10 +180,11 @@ export function useAdminGallery(params?: Record<string, unknown>) {
 
 export function useAdminGalleryMutations() {
   const upload = useMutation({ mutationFn: ({ file, data }: { file: File; data: Record<string, string> }) => adminGalleryApi.upload(file, data) })
+  const uploadMultiple = useMutation({ mutationFn: ({ files, data }: { files: File[]; data: Record<string, string> }) => adminGalleryApi.uploadMultiple(files, data) })
   const update = useMutation({ mutationFn: ({ id, data }: { id: number; data: unknown }) => adminGalleryApi.update(id, data) })
   const remove = useMutation({ mutationFn: (id: number) => adminGalleryApi.delete(id) })
 
-  return { upload, update, remove }
+  return { upload, uploadMultiple, update, remove }
 }
 
 export function useAdminMembers() {

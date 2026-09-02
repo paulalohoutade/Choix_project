@@ -73,13 +73,42 @@ class AdminGalleryController extends Controller
     public function upload(Request $request): JsonResponse
     {
         $request->validate([
-            'file'     => 'required|file|mimes:jpg,jpeg,png,webp,gif,mp4,webm,mov,ogg,avi,mkv,m4v|max:204800',
+            'file'     => 'nullable|file|mimes:jpg,jpeg,png,webp,gif,mp4,webm,mov,ogg,avi,mkv,m4v|max:204800',
+            'files'    => 'nullable|array|max:40',
+            'files.*'  => 'file|mimes:jpg,jpeg,png,webp,gif,mp4,webm,mov,ogg,avi,mkv,m4v|max:204800',
             'title'    => 'nullable|string|max:200',
             'type'     => 'nullable|in:photo,video',
             'event_id' => 'nullable|exists:events,id',
         ]);
 
+        $titles = $request->input('titles', []);
+
         try {
+            if ($request->hasFile('files')) {
+                $items = [];
+                foreach ($request->file('files') as $index => $file) {
+                    $path = $file->store('gallery', 'public');
+                    if (!$path) {
+                        return response()->json(['error' => 'File storage returned empty path.'], 500);
+                    }
+                    $mime  = $file->getMimeType();
+                    $type  = isset($titles[$index]) ? null : $request->type;
+                    $type  = $type ?? (str_starts_with($mime, 'video/') ? 'video' : 'photo');
+                    $items[] = GalleryItem::create([
+                        'title'    => $titles[$index] ?? $request->title,
+                        'file_path'=> $path,
+                        'type'     => $type,
+                        'event_id' => $request->event_id,
+                    ]);
+                }
+
+                return response()->json($items, 201);
+            }
+
+            if (!$request->hasFile('file')) {
+                return response()->json(['error' => 'Aucun fichier fourni.'], 422);
+            }
+
             $path = $request->file('file')->store('gallery', 'public');
         } catch (\Exception $e) {
             return response()->json(['error' => 'Upload failed: ' . $e->getMessage()], 500);
