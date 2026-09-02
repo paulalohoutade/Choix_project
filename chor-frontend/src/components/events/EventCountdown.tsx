@@ -38,11 +38,11 @@ export default function EventCountdown({ target }: { target: string | Date }) {
     return null
   }
 
-  const units: { label: string; value: number }[] = [
-    { label: 'Jours', value: left.days },
-    { label: 'Heures', value: left.hours },
-    { label: 'Min', value: left.minutes },
-    { label: 'Sec', value: left.seconds },
+  const units: { label: string; value: number; color: string }[] = [
+    { label: 'Jours', value: left.days, color: 'text-green-600' },
+    { label: 'Heures', value: left.hours, color: 'text-gray-600' },
+    { label: 'Min', value: left.minutes, color: 'text-gray-600' },
+    { label: 'Sec', value: left.seconds, color: 'text-red-600' },
   ]
 
   return (
@@ -50,7 +50,7 @@ export default function EventCountdown({ target }: { target: string | Date }) {
       <div className="grid grid-cols-4 gap-1.5 text-center">
         {units.map((u) => (
           <div key={u.label} className="bg-stone-100 py-2 rounded-lg">
-            <p className="font-display font-bold text-lg leading-none text-stone-700">{pad(u.value)}</p>
+            <p className={`font-display font-bold text-lg leading-none ${u.color}`}>{pad(u.value)}</p>
             <p className="text-[10px] uppercase tracking-wide text-stone-400 mt-0.5">{u.label}</p>
           </div>
         ))}
