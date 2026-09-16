@@ -86,7 +86,7 @@ export function HeroSection() {
           <img
             src="/logo.png"
             alt="Logo Chorale Hefzibah"
-            className="w-28 h-28 sm:w-40 sm:h-40 lg:w-44 lg:h-44 object-contain mx-auto drop-shadow-2xl"
+            className="w-40 h-40 sm:w-56 sm:h-56 lg:w-64 lg:h-64 object-contain mx-auto drop-shadow-2xl"
             onError={(e) => {
               const t = e.currentTarget
               t.style.display = 'none'
@@ -95,7 +95,7 @@ export function HeroSection() {
             }}
           />
           <div
-            className="w-28 h-28 sm:w-40 sm:h-40 lg:w-44 lg:h-44 rounded-full bg-white/10 border-2 border-cec-gold/60
+            className="w-40 h-40 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full bg-white/10 border-2 border-cec-gold/60
                        items-center justify-center mx-auto hidden"
           >
             <Music size={56} className="text-cec-gold" />
