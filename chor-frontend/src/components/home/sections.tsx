@@ -48,7 +48,7 @@ function RollingTitle({ segments }: { segments: { text: string; className?: stri
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden min-h-screen flex flex-col items-center justify-start pt-16 sm:pt-20">
+    <section className="relative overflow-hidden h-screen min-h-screen flex flex-col items-center justify-center pt-16 sm:pt-20">
 
       {/* ── Vidéo de fond ────────────────────────────────────────────────── */}
       {/*
