@@ -67,9 +67,8 @@ class Event extends Model
         return $query
             ->where('status', '!=', 'cancelled')
             ->where('event_date', '<=', now())
-            ->where(function (Builder $q) {
-                $q->whereNull('end_date')->orWhere('end_date', '>=', now());
-            });
+            ->whereNotNull('end_date')
+            ->where('end_date', '>=', now());
     }
 
     public function scopePast(Builder $query): Builder
