@@ -48,7 +48,7 @@ function RollingTitle({ segments }: { segments: { text: string; className?: stri
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden h-screen min-h-screen flex flex-col items-center justify-center pt-16 sm:pt-20">
+    <section className="relative overflow-hidden min-h-screen flex flex-col items-center justify-start pt-16 sm:pt-20">
 
       {/* ── Vidéo de fond ────────────────────────────────────────────────── */}
       {/*
@@ -86,7 +86,7 @@ export function HeroSection() {
           <img
             src="/logo.png"
             alt="Logo Chorale Hefzibah"
-            className="w-40 h-40 sm:w-56 sm:h-56 lg:w-64 lg:h-64 object-contain mx-auto drop-shadow-2xl"
+            className="w-72 h-40 sm:w-96 sm:h-52 lg:w-[32rem] lg:h-[17rem] object-contain mx-auto drop-shadow-2xl"
             onError={(e) => {
               const t = e.currentTarget
               t.style.display = 'none'
@@ -95,7 +95,7 @@ export function HeroSection() {
             }}
           />
           <div
-            className="w-40 h-40 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full bg-white/10 border-2 border-cec-gold/60
+            className="w-72 h-40 sm:w-96 sm:h-52 lg:w-[32rem] lg:h-[17rem] rounded-2xl bg-white/10 border-2 border-cec-gold/60
                        items-center justify-center mx-auto hidden"
           >
             <Music size={56} className="text-cec-gold" />
