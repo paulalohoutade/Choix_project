@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Calendar, MapPin } from 'lucide-react'
-import { format } from 'date-fns'
+import { Calendar, MapPin, CalendarClock } from 'lucide-react'
+import { format, differenceInWeeks } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import type { Event } from '@/types'
 import { Badge } from '@/components/ui'
@@ -22,6 +22,7 @@ const typeColors: Record<string, 'blue' | 'gold' | 'green'> = {
 
 export default function EventCard({ event, compact = false }: Props) {
   const date = new Date(event.event_date)
+  const weeksLeft = differenceInWeeks(date, new Date())
 
   return (
     <Link
@@ -91,6 +92,32 @@ export default function EventCard({ event, compact = false }: Props) {
         {event.status === 'upcoming' && !compact && (
           <EventCountdown target={event.event_date} />
         )}
+
+        {/* Weeks remaining */}
+        <div className="mt-4 pt-3 border-t border-stone-100">
+          {event.status === 'upcoming' && (
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-cec-blue">
+              <CalendarClock size={14} />
+              {weeksLeft <= 0
+                ? 'Cette semaine'
+                : weeksLeft === 1
+                  ? '1 semaine restante'
+                  : `${weeksLeft} semaines restantes`}
+            </span>
+          )}
+          {event.status === 'ongoing' && (
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-green-600">
+              <CalendarClock size={14} />
+              En cours
+            </span>
+          )}
+          {event.status === 'cancelled' && (
+            <span className="flex items-center gap-1.5 text-sm font-semibold text-red-500">
+              <CalendarClock size={14} />
+              Annulé
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   )
