@@ -20,6 +20,8 @@ echo "APP_KEY set?=$([ -n "$APP_KEY" ] && echo yes || echo NO)"
 php artisan config:clear
 php artisan cache:clear
 php artisan migrate --force
+# Admin uniquement (firstOrCreate) — ne touche pas aux données existantes
+php artisan db:seed --class=AdminUserSeeder --force
 
-echo "==== MIGRATE OK, starting apache on :$PORT ===="
+echo "==== MIGRATE+SEED OK, starting apache on :$PORT ===="
 exec "$@"
