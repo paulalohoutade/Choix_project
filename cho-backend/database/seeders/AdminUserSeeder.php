@@ -9,21 +9,23 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
+        $email = env('ADMIN_EMAIL', 'paulalohoutade7@gmail.com');
         $password = env('ADMIN_PASSWORD', 'Admin@2024!');
 
-        // Crée le super admin si inexistant
         $user = User::firstOrCreate(
-            ['email' => 'paulalohoutade7@gmail.com'],
+            ['email' => $email],
             [
-                'name'     => 'Admin Chorale',
+                'name'     => env('ADMIN_NAME', 'Admin Chorale'),
                 'password' => $password,
                 'role'     => 'super_admin',
             ]
         );
 
-        // Synchronise le mot de passe avec ADMIN_PASSWORD si défini (production)
+        // Sync password if ADMIN_PASSWORD is set (production)
         if (env('ADMIN_PASSWORD')) {
             $user->update(['password' => $password]);
         }
+
+        $this->command?->info("Admin ready: {$user->email}");
     }
 }
