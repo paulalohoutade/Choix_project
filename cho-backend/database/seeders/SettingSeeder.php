@@ -18,7 +18,7 @@ class SettingSeeder extends Seeder
             'instagram_url'      => '',
             'whatsapp_number'    => '+22900000000',
             'contact_email'      => 'contact@chorale-ecc.org',
-            'contact_phone'      => '+22900000000',
+            'contact_phone'      => '+2290195807402',
             'address'            => 'Église du Christianisme Céleste, Cotonou, Bénin',
         ];
 

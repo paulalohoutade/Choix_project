@@ -17,8 +17,8 @@ return new class extends Migration
             $table->dateTime('event_date');
             $table->dateTime('end_date')->nullable();
             $table->string('cover_image')->nullable();
-            $table->enum('type', ['concert', 'messe', 'retraite', 'tournee', 'autre'])->default('autre');
-            $table->enum('status', ['upcoming', 'past', 'cancelled'])->default('upcoming');
+            $table->string('type', 20)->default('autre');
+            $table->string('status', 20)->default('upcoming');
             $table->timestamps();
         });
     }

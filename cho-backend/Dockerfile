@@ -34,8 +34,21 @@ WORKDIR /var/www/html
 # Copier le projet Laravel
 COPY . .
 
+# Dossiers Laravel obligatoires (parfois absents si le contexte de build les exclut)
+RUN mkdir -p \
+    bootstrap/cache \
+    storage/framework/cache/data \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    storage/app/public
+
+# Entrypoint : configure Apache sur $PORT (Render) puis démarre
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Installer les dépendances PHP
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 # Augmenter les limites PHP pour les uploads audio
 RUN cp /var/www/html/php.ini /usr/local/etc/php/conf.d/laravel-uploads.ini
@@ -53,6 +66,9 @@ RUN printf '<Directory /var/www/html/public>\n\
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Render injecte PORT=10000 (health check). L'entrypoint reconfigure Apache dessus.
+ENV PORT=10000
 EXPOSE 80
 
-CMD ["sh", "-c", "php artisan config:clear && php artisan cache:clear && php artisan migrate --force && apache2-foreground"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["apache2-foreground"]
