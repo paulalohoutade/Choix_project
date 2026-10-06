@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Health\Checks\DatabaseHealthCheck;
-use Illuminate\Support\Facades\Health;
+use Illuminate\Foundation\Events\DiagnosingHealth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,9 +25,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-        // /up vérifie Neon — un ping externe maintient Render + DB éveillés
-        Health::checks([
-            DatabaseHealthCheck::new(),
-        ]);
+        // /up pinge Neon : un ping UptimeRobot maintient Render + DB éveillés
+        Event::listen(DiagnosingHealth::class, function () {
+            DB::select('select 1');
+        });
     }
 }
