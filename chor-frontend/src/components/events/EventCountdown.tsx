@@ -15,8 +15,8 @@ function diff(target: Date): TimeLeft {
   const seconds = 59 - now.getSeconds()
 
   const targetStart = new Date(target.getFullYear(), target.getMonth(), target.getDate())
-  const tomorrowStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
-  const days = Math.max(0, Math.round((targetStart.getTime() - tomorrowStart.getTime()) / 86400000))
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const days = Math.max(0, Math.round((targetStart.getTime() - todayStart.getTime()) / 86400000))
 
   return { days, hours, minutes, seconds }
 }
